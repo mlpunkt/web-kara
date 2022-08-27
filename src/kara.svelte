@@ -1,0 +1,1 @@
+<polyline points="5,5 45,25 5,45" pointer-events="none"/>

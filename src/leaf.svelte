@@ -1,0 +1,1 @@
+<rect x="5" y="5" width="40" height="40" style="fill:#ccffda;" pointer-events="none" />
