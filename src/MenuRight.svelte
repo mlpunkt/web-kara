@@ -29,7 +29,7 @@
 
 </script>
 
-<div style=" display: flex; flex-direction: column">
+<div style=" display: flex; flex-direction: column; padding: 0.5em">
     <p>Welt</p>
 	<!-- <button on:click={handleKaraClick} class:highlightButton={$uiState.editMode === EditMode.KARA}>kara</button> -->
 	

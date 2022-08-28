@@ -10,7 +10,7 @@
     import iconRemoveLeaf from '../assets/iconRemoveLeaf_normal.svg';
 </script>
 
-<div style=" display: flex; flex-direction: column">
+<div style=" display: flex; flex-direction: column; padding: 0.5em">
     <p>Kara</p>
 
     <button
