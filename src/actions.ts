@@ -1,6 +1,10 @@
 import type { EditMode, UiState } from './types/uiState';
-import {Direction, direction_ccw, direction_cw, Position, World, world, world_fieldHasLeaf, world_fieldHasMushroom, world_fieldHasTree} from './types/world';
+import {Direction, direction_ccw, direction_cw, initialWorld, Position, World, world, world_fieldHasLeaf, world_fieldHasMushroom, world_fieldHasTree} from './types/world';
 import {uiState} from './types/uiState';
+
+let worldSubscription = initialWorld;
+world.subscribe(newWorld => worldSubscription = newWorld);
+
 
 function nextPositionInDirection(position: Position, direction: Direction, sizeX: number, sizeY: number) {
     if (direction === Direction.UP) {
@@ -147,6 +151,13 @@ export function kara_setPosition(pos: Position) {
     });
 }
 
+export function kara_putLeaf() {
+    world_putLeaf(worldSubscription.kara.position);
+}
+
+export function kara_removeLeaf() {
+    world_removeLeaf(worldSubscription.kara.position);
+}
 
 export function world_toggleTree(pos: Position) {
     world.update((world: World) => {

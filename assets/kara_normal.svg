@@ -1,7 +1,19 @@
-<!-- <polyline points="5,5 45,25 5,45" pointer-events="none"/> -->
-<g pointer-events="none">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
 
-<ellipse
+<svg
+   width="50"
+   height="50"
+   viewBox="0 0 50 50"
+   version="1.1"
+   id="svg5"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs2" />
+  <g
+     id="layer1">
+    <ellipse
        style="fill:#ff0000;stroke:#000000;stroke-width:1.96342;stroke-linecap:round;stroke-linejoin:round;stop-color:#000000"
        id="path234"
        cx="24.831696"
@@ -84,5 +96,5 @@
        style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:1.96244;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000"
        d="m 29.863921,39.180497 c 0,0 0.424355,2.752714 0,4.025777 -0.530443,1.59133 -3.019335,4.025785 -3.019335,4.025785"
        id="path6579-0" />
-
-</g>
+  </g>
+</svg>

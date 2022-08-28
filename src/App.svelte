@@ -2,11 +2,15 @@
 	import {kara_move, kara_turnLeft, kara_turnRight, uiState_setEditMode, world_putLeaf, world_removeLeaf} from './actions';
 
 	import World from "./world.svelte";
+	import MenuLeft from "./MenuLeft.svelte";
+	import MenuRight from "./MenuRight.svelte";
+	import MenuBottom from "./MenuBottom.svelte";
 
     import {CodeJar} from "@novacbn/svelte-codejar";
 	import { world_karaOnLeaf, world_mushroomFront, world_treeFront, world_treeLeft, world_treeRight } from './types/world';
 	import { world} from './types/world';
-	import { EditMode, uiState } from './types/uiState';
+
+	import {sleepTimer} from './interpreter';
 
 	let lineNumber = 1;
 
@@ -51,10 +55,9 @@
 		return world_mushroomFront($world);
 	});
 
-	let sleepTime = 1;
 
 	Sk.builtins.__st__ = new Sk.builtin.func(function () {
-		return sleepTime;
+		return $sleepTimer;
 	});
 
 
@@ -163,6 +166,8 @@ class Kara:
 kara = Kara()
 `;
 
+	const sleep = (milliseconds) =>  new Promise(resolve => setTimeout(resolve, milliseconds))
+
 	function handleButtonRunClick() {
 		exit = false;
 		const asyncFunc = async function() {
@@ -187,10 +192,13 @@ kara = Kara()
 				}
 				if (test.data.type === 'Sk.promise') {
 					await test.data.promise;
+				} else {
+					// Kontrolle kurz abgeben, damit UI-Aktionen (z.B. Programm abbrechen) möglich sind
+					// Parameter 0: Warten bis zum nächsen Event Cycle
+					await sleep(0);
 				}
 				test = test.resume();
 			}
-
 		}
 
 		asyncFunc()
@@ -213,11 +221,13 @@ kara = Kara()
 	// }
 
 	function handleButtonFastClick() {
-		sleepTime = 0.3
+		// sleepTime = 0.3
+		sleepTimer.set(0.3);
 	}
 
 	function handleButtonSlowClick() {
-		sleepTime = 1.5
+		// sleepTime = 1.5
+		sleepTimer.set(2);
 	}
 
 	let exit = false;
@@ -266,49 +276,50 @@ while True:
 // move()
 //`
 
-	function handleTreeClick() {
-		uiState_setEditMode(EditMode.TREE);
+
+
+	function highlight(code, syntax) {
+		const codeArray = code.split(/\r\n|\r|\n/g);
+
+		const lineBreak = (i) => i < codeArray.length - 1
+										? '\n'
+										: '';
+
+		const newCode = codeArray.reduce(
+			(acc, curr, i ) => i === lineNumber - 1
+									? acc + '<span style="background-color:#ddd;">' + curr + '</span>' + lineBreak(i)
+									: acc + curr + lineBreak(i),
+			''
+		);
+
+		return newCode;
 	}
 
-	function handleKaraClick() {
-		uiState_setEditMode(EditMode.KARA);
-	}
-
-	function handleLeafClick() {
-		uiState_setEditMode(EditMode.LEAF);
-	}
-
-	function handleMushroomClick() {
-		uiState_setEditMode(EditMode.MUSHROOM);
-	}
+	let codejar;
 </script>
 
 <main>
+	
 	<button on:click={handleButtonRunClick}>run</button>
-	<button on:click={handleButtonFastClick}>schnell</button>
-	<button on:click={handleButtonSlowClick}>langsam</button>
+	<!-- <button on:click={handleButtonFastClick}>schnell</button>
+	<button on:click={handleButtonSlowClick}>langsam</button> -->
 	<button on:click={handleButtonExitClick}>Programm abbrechen</button>
-	<button on:click={() => kara_move()}>move</button>
-	<button on:click={() => kara_turnRight()}>drehe CW</button>
-	<button on:click={() => kara_turnLeft()}>drehe CCW</button>
-	<button on:click={() => console.log(world_treeFront($world))}>treeFront?</button>
+	<!-- <button on:click={() => console.log(world_treeFront($world))}>treeFront?</button>
 	<button on:click={() => console.log(world_treeLeft($world))}>treeLeft?</button>
 	<button on:click={() => console.log(world_treeRight($world))}>treeRight?</button>
-	<button on:click={() => console.log(world_karaOnLeaf($world))}>onLeaf?</button>
-	<button on:click={handleTreeClick} class:highlightButton={$uiState.editMode === EditMode.TREE}>Baum setzen/löschen</button>
-	<button on:click={handleLeafClick} class:highlightButton={$uiState.editMode === EditMode.LEAF}>Blatt setzen/löschen</button>
-	<button on:click={handleMushroomClick} class:highlightButton={$uiState.editMode === EditMode.MUSHROOM}>Pilz setzen/löschen</button>
-	<button on:click={handleKaraClick} class:highlightButton={$uiState.editMode === EditMode.KARA}>Kara setzen</button>
-	<br>
-	<World />
+	<button on:click={() => console.log(world_karaOnLeaf($world))}>onLeaf?</button> -->
 
-	<CodeJar  spellcheck={false} tab={"    "} bind:value={src} />
+	<br>
+
+	<div style="display: flex;">
+		<MenuLeft />
+		<World />
+		<MenuRight />
+	</div>
+	<MenuBottom />
+	
+	<CodeJar bind:this={codejar} spellcheck={false} tab={"    "} bind:value={src} withLineNumbers={true} highlight={highlight} />
 	<br>
 	<p>folgende Zeile wird ausgeführt: {lineNumber}</p>
 </main>
 
-<style>
-	.highlightButton {
-		background-color: aqua;
-	}
-</style>

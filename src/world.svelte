@@ -67,6 +67,7 @@
     <!-- kara -->
     <g transform={translateKara + ' ' + rotateKara}>
         <Kara />
+        <!-- <iconKara /> -->
     </g>
 
     <!-- Bäume  -->

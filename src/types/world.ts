@@ -187,7 +187,7 @@ export interface World {
     mushrooms: Array<Position>;
 }
 
-const initialWorld = {
+export const initialWorld = {
     sizeX: 6,
     sizeY: 6,
 
