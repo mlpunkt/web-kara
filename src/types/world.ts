@@ -123,6 +123,15 @@ export function world_fieldHasTree(world, pos: Position) {
     }
 }
 
+export function world_fieldHasMushroom(world, pos: Position) {
+    const found = world.mushrooms.find(posOfTree => posOfTree.x === pos.x && posOfTree.y === pos.y);
+
+    if (found !== null && found !== undefined) {
+        return true;
+    } else {
+        return false;
+    }
+}
 
 export function world_fieldHasLeaf(world, pos: Position) {
     const found = world.leafs.find(posOfTree => posOfTree.x === pos.x && posOfTree.y === pos.y);
@@ -138,6 +147,12 @@ export function world_treeFront(world: World) {
     const posFront = positionFront(world.kara.direction, world.kara.position, world.sizeX, world.sizeY);
 
     return world_fieldHasTree(world, posFront);
+}
+
+export function world_mushroomFront(world: World) {
+    const posFront = positionFront(world.kara.direction, world.kara.position, world.sizeX, world.sizeY);
+
+    return world_fieldHasMushroom(world, posFront);
 }
 
 export function world_treeLeft(world: World) {
@@ -168,6 +183,8 @@ export interface World {
     trees: Array<Position>;
 
     leafs: Array<Position>;
+
+    mushrooms: Array<Position>;
 }
 
 const initialWorld = {
@@ -182,6 +199,8 @@ const initialWorld = {
     trees: [{x: 3, y: 1}] as Array<Position>,
 
     leafs: [{x: 0, y: 0}] as Array<Position>,
+
+    mushrooms: [{x: 3, y: 3}] as Array<Position>,
 } as World
 
 export const world = writable(initialWorld);

@@ -4,6 +4,7 @@ export enum EditMode {
     KARA = "KARA",
     TREE = "TREE",
     LEAF = "LEAF",
+    MUSHROOM = "MUSHROOM",
 }
 
 export interface UiState {

@@ -2,11 +2,13 @@
     import Kara from './kara.svelte';
     import Tree from './tree.svelte';
     import Leaf from './leaf.svelte';
+    import Mushroom from './mushroom.svelte';
+
     import { range } from 'fp-ts/NonEmptyArray'
 
     import {direction_rotationDegrees, world} from './types/world';
     import {uiState, EditMode } from './types/uiState';
-    import { kara_setPosition, world_toggleLeaf, world_toggleTree } from './actions';
+    import { kara_setPosition, world_toggleLeaf, world_toggleMushroom, world_toggleTree } from './actions';
 
     const fieldSize = 50;
 
@@ -22,6 +24,8 @@
             world_toggleTree({x, y});
         } else if($uiState.editMode === EditMode.LEAF) {
             world_toggleLeaf({x, y});
+        } else if($uiState.editMode === EditMode.MUSHROOM) {
+            world_toggleMushroom({x, y});
         }
     }
 </script>
@@ -69,6 +73,13 @@
     {#each $world.trees as pos}
         <g transform={"translate(" + pos.x * fieldSize + " " + pos.y*fieldSize + ")"}>
             <Tree />
+        </g>
+    {/each}
+
+    <!-- Pilze -->
+    {#each $world.mushrooms as pos}
+        <g transform={"translate(" + pos.x * fieldSize + " " + pos.y*fieldSize + ")"}>
+            <Mushroom />
         </g>
     {/each}
 </svg>

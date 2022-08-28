@@ -164,7 +164,7 @@ def putLeaf():
 
 def removeLeaf():
     js.kara_removeLeaf()
-    `
+`
 
 const startCode = `print('startCode')
 import js
@@ -188,8 +188,8 @@ def tracefunc(frame, event, arg):
     return tracefunc
 
 # https://stackoverflow.com/questions/55998616/how-to-trace-code-run-in-global-scope-using-sys-settrace
-sys.settrace(tracefunc)
-sys._getframe().f_trace = tracefunc
+#sys.settrace(tracefunc)
+#sys._getframe().f_trace = tracefunc
 
 import userCode
 `;
@@ -220,17 +220,18 @@ self.onmessage = async (event) => {
         // console.log(testfile);
 
         pyodide.FS.writeFile('kara.py', pythonBaseCode);
+        pyodide.runPython(event.data.pythonSrc);
 
-        pyodide.FS.writeFile('userCode.py', event.data.pythonSrc);
+        // pyodide.FS.writeFile('userCode.py', event.data.pythonSrc);
 
-        let testfile = pyodide.FS.readFile("userCode.py", { encoding: "utf8" });
-        console.log(testfile)
+        // let testfile = pyodide.FS.readFile("userCode.py", { encoding: "utf8" });
+        // console.log(testfile)
 
         // pyodide.FS.writeFile('start.py', startCode);
 
         // pyodide.pyimport('start')
 
-        pyodide.runPython (startCode)
+        //pyodide.runPython (startCode)
 
         console.log('Python Ende?')
         // pyodide.runPython(pythonBaseCode)
