@@ -15,33 +15,6 @@ stopProgram.subscribe(newStopProgram => stopProgramSubscription = newStopProgram
 
 export const currentLineNumber = writable(1);
 
-
-let initialSrc = 
-`# BEFEHLE:
-# kara.move()  kara.turnRight()  kara.turnLeft()
-# kara.putLeaf()  kara.removeLeaf()
-#
-# SENSOREN:
-# kara.treeFront()  kara.treeRight() kara.treeLeft()
-# kara.onLeaf  kara.mushroomFront()
-
-while True:
-    while not kara.treeFront():
-        kara.move()
-    kara.turnRight()
-    kara.move()
-    kara.turnLeft()
-    kara.move()
-    kara.move()
-    kara.turnLeft()
-    kara.move()
-    kara.turnRight()
-`
-
-export const srcInEditor = writable(initialSrc);
-
-
-
 Sk.builtins.__move__ = new Sk.builtin.func(function () {
     kara_move();
 });
@@ -85,7 +58,8 @@ Sk.builtins.__mushroomFront__ = new Sk.builtin.func(function () {
 
 
 Sk.builtins.__st__ = new Sk.builtin.func(function () {
-    return sleepTimerSubscription;
+    // return sleepTimerSubscription;
+    return 0;
 });
 
 
@@ -146,27 +120,33 @@ export function runProgram(src: string) {
             retainGlobals: true,
         });
 
-        let test = Sk.importMainWithBody("base", false, srcBase, true);
-        while (test.$isSuspension && !stopProgramSubscription) {
-            if (test.data.type === 'Sk.promise') {
-                await test.data.promise;
+        let suspension = Sk.importMainWithBody("base", false, srcBase, true);
+        while (suspension.$isSuspension && !stopProgramSubscription) {
+            if (suspension.data.type === 'Sk.promise') {
+                await suspension.data.promise;
             }
-            test = test.resume();
+            suspension = suspension.resume();
         }
 
-        test = Sk.importMainWithBody("userSrc", false, src, true);
-        while (test.$isSuspension && !stopProgramSubscription) {
-            if (test.child.$filename === "userSrc.py") {
-                currentLineNumber.set(test.child.$lineno)
+        suspension = Sk.importMainWithBody("userSrc", false, src, true);
+        let lastLineNumber = -1
+        while (suspension.$isSuspension && !stopProgramSubscription) {
+            if (suspension.child.$filename === "userSrc.py") {
+                if (suspension.child.$lineno !== lastLineNumber) {
+                    lastLineNumber = suspension.child.$lineno;
+                    console.log(suspension.child.$lineno)                
+                    currentLineNumber.set(suspension.child.$lineno)
+                    await sleep(sleepTimerSubscription * 1000);
+                }
             }
-            if (test.data.type === 'Sk.promise') {
-                await test.data.promise;
-            } else {
-                // Kontrolle kurz abgeben, damit UI-Aktionen (z.B. Programm abbrechen) möglich sind
-                // Parameter 0: Warten bis zum nächsen Event Cycle
-                await sleep(0);
-            }
-            test = test.resume();
+            // if (test.data.type === 'Sk.promise') {
+            //     await test.data.promise;
+            // } else {
+            //     // Kontrolle kurz abgeben, damit UI-Aktionen (z.B. Programm abbrechen) möglich sind
+            //     // Parameter 0: Warten bis zum nächsen Event Cycle
+            //     await sleep(0);
+            // }
+            suspension = suspension.resume();
         }
     }
 
@@ -174,3 +154,18 @@ export function runProgram(src: string) {
         .then(() => console.log('fertig'))
         .catch((e) => console.log(e));
 }
+
+
+// evtl. alternative Funktion zum Starten eines Programms:
+// function handleButtonRunClick() {
+// 	var myPromise = Sk.misceval.asyncToPromise(function() {
+// 		return Sk.importMainWithBody("<stdin>", false, src, true);
+// 	});
+
+// 	myPromise.then(function(mod) {
+// 		console.log('success');
+// 	},
+// 		function(err) {
+// 		console.log(err.toString());
+// 	});
+// }

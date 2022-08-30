@@ -1,0 +1,50 @@
+import { EditorView } from "codemirror";
+import {Decoration, ViewPlugin, DecorationSet, ViewUpdate} from "@codemirror/view"
+import {EditorState, StateField, Extension, RangeSetBuilder} from "@codemirror/state"
+
+// Markierung der Zeile, die gerade ausgeführt wird
+const baseTheme = EditorView.baseTheme({
+    "&light .cm-zebraStripe": {backgroundColor: "#d4fafa"},
+    "&dark .cm-zebraStripe": {backgroundColor: "#1a2727"}
+})
+
+const stripe = Decoration.line({
+    attributes: {class: "cm-zebraStripe"}
+})
+
+function lineMarkRangeSet(view: EditorView) {
+    console.log('rangebuilder')
+    let builder = new RangeSetBuilder<Decoration>()
+    
+    if (view.state.doc.lines > 3) {
+        const line = view.state.doc.line(4);
+        builder.add(line.from, line.from, stripe)
+    }
+
+    return builder.finish()
+}
+
+const lineMarkPlugin = ViewPlugin.fromClass(class {
+    decorations: DecorationSet
+
+    constructor(view: EditorView) {
+        this.decorations = lineMarkRangeSet(view)
+    }
+
+    update(update: ViewUpdate) {
+        if (update.docChanged || update.viewportChanged)
+        this.decorations = lineMarkRangeSet(update.view)
+    }
+}, {
+    decorations: v => v.decorations
+})
+
+
+
+export function lineMarkExtension(): Extension {
+    console.log('build extension')
+    return [
+        baseTheme,
+        lineMarkPlugin
+    ]
+}

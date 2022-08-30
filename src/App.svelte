@@ -5,92 +5,18 @@
 	import MenuRight from "./MenuRight.svelte";
 	import MenuBottom from "./MenuBottom.svelte";
 
-    import {CodeJar} from "@novacbn/svelte-codejar";
-	import { srcInEditor, currentLineNumber } from "./interpreter";
+	import Editor from './Editor.svelte';
+	import { currentLineNumber, runProgram } from "./interpreter";
+	import { initialSrc } from "./initialSrc";
+
+	let editor: Editor;
+
+	function handleRun() {
+		const src = editor.getText();
+		runProgram(src);
+	}
 
 
-	let lineNumber = 1;
-
-	// function handleButtonRunClick() {
-	// 	runProgram(src);
-	// }
-
-	// evtl. alternative Funktion zum Starten eines Programms:
-	// function handleButtonRunClick() {
-	// 	var myPromise = Sk.misceval.asyncToPromise(function() {
-	// 		return Sk.importMainWithBody("<stdin>", false, src, true);
-	// 	});
-
-	// 	myPromise.then(function(mod) {
-	// 		console.log('success');
-	// 	},
-	// 		function(err) {
-	// 		console.log(err.toString());
-	// 	});
-	// }
-
-
-
-
-// 	let src=`kara.move()
-// kara.turnLeft()
-// kara.move()
-// kara.turnRight()
-// kara.move()`
-
-// let src = `
-// while True:
-//     while not kara.treeFront():
-//         kara.move()
-//     kara.turnRight()
-//     kara.move()
-//     kara.turnLeft()
-//     kara.move()
-//     kara.move()
-//     kara.turnLeft()
-//     kara.move()
-//     kara.turnRight()
-// `
-
-// let src=`
-// while kara.treeRight():
-//     kara.move()
-// while kara.treeLeft():
-//     kara.move()`
-
-
-let src=`
-while True:
-    if kara.onLeaf():
-        kara.removeLeaf()
-    else:
-        kara.putLeaf()
-    kara.move()`
-
-// 	let src=`import time
-// move()
-// time.sleep(1)
-// move()
-//`
-
-
-
-	// function highlight(code, syntax) {
-	// 	const codeArray = code.split(/\r\n|\r|\n/g);
-
-	// 	const lineBreak = (i) => i < codeArray.length - 1
-	// 									? '\n'
-	// 									: '';
-
-	// 	const newCode = codeArray.reduce(
-	// 		(acc, curr, i ) => i === lineNumber - 1
-	// 								? acc + '<span style="background-color:#ddd;">' + curr + '</span>' + lineBreak(i)
-	// 								: acc + curr + lineBreak(i),
-	// 		''
-	// 	);
-
-	// 	return newCode;
-	// }
 </script>
 
 <main>
@@ -107,9 +33,14 @@ while True:
 		<World />
 		<MenuRight />
 	</div>
-	<MenuBottom />
+	<MenuBottom on:run={handleRun}/>
 	
-	<CodeJar spellcheck={false} tab={"    "} bind:value={$srcInEditor} withLineNumbers={true} />
 	<br>
 	<p>folgende Zeile wird ausgeführt: {$currentLineNumber}</p>
+
+	<Editor bind:this={editor} initialText={initialSrc} />
+
+	<!-- <button on:click={() => editor.setText('test')}>test</button>
+	<button on:click={() => editor.highlightLine(1)}>test</button>
+	<button on:click={() => editor.highlightLine(2)}>test</button> -->
 </main>

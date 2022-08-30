@@ -1,13 +1,17 @@
 <script lang="ts">
-    import {runProgram, sleepTimer, srcInEditor, stopProgram} from './interpreter';
+    import {runProgram, sleepTimer, stopProgram} from './interpreter';
     import { tooltip } from './tooltip';
+    import { createEventDispatcher } from 'svelte';
+
+    const dispatch = createEventDispatcher();
 
     // https://joshuatz.com/posts/2021/using-svg-files-in-svelte/
     import iconRun from '../assets/iconRun_normal.svg';
     import iconStop from '../assets/iconStop_normal.svg';
  
     function handleButtonRunClick() {
-		runProgram($srcInEditor);
+		// runProgram($srcInEditor);
+        dispatch('run');
     }
 
     function handleButtonStopClick() {
