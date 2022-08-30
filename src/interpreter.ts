@@ -9,9 +9,58 @@ export const sleepTimer = writable(1);
 let sleepTimerSubscription = 1;
 sleepTimer.subscribe(newSleepTimer => sleepTimerSubscription = newSleepTimer);
 
-export const stopProgram = writable(false);
-let stopProgramSubscription = false;
-stopProgram.subscribe(newStopProgram => stopProgramSubscription = newStopProgram);
+
+// let pauseProgramPromise: any; //Promise<>;
+// let pauseProgramPromiseResolve: any;
+
+// function endPause() {
+//     if (pauseProgramPromiseResolve) {
+//         pauseProgramPromiseResolve();
+//     }
+// }
+
+const stopProgramFlag = writable(false);
+let stopProgramFlagSubscription = false;
+stopProgramFlag.subscribe(newStopProgram => stopProgramFlagSubscription = newStopProgram);
+
+export const pauseProgramFlag = writable(false);
+let pauseProgramFlagSubscription = false;
+pauseProgramFlag.subscribe(newPauseProgram => pauseProgramFlagSubscription = newPauseProgram);
+
+export const stopProgramFunc = writable(() => {
+    // if (pauseProgramPromiseResolve) {
+    //     pauseProgramPromiseResolve();
+    // }  
+    stopProgramFlag.set(true);
+    if (sleepPromiseResolve) {
+        sleepPromiseResolve();
+    }
+        
+});
+
+export const pauseProgramFunc = writable(() => {
+    // if (interpreterStateSubscription === InterpreterState.PAUSED) {
+    //     pauseProgramFlag.set(false);
+    //     endPause();
+    // } else {
+    //     pauseProgramFlag.set(true);
+    //     // if (sleepPromiseResolve) {
+    //     //     sleepPromiseResolve()
+    //     // }
+    // }
+});
+
+// export const resumeProgramFunc = writable(() => pauseProgramFlag.set(false));
+
+export enum InterpreterState {
+    STOPPED = "STOPPED",
+    RUNNING = "RUNNING",
+    PAUSED = "PAUSED",
+}
+
+export const interpreterState = writable(InterpreterState.STOPPED);
+let interpreterStateSubscription = InterpreterState.STOPPED;
+interpreterState.subscribe(newVal => interpreterStateSubscription = newVal);
 
 export const currentLineNumber = writable(1);
 
@@ -26,7 +75,6 @@ Sk.builtins.__turnRight__ = new Sk.builtin.func(function () {
 Sk.builtins.__turnLeft__ = new Sk.builtin.func(function () {
     kara_turnLeft();
 });
-
 
 Sk.builtins.__putLeaf__ = new Sk.builtin.func(function () {
     world_putLeaf(worldSubscription.kara.position);
@@ -62,8 +110,16 @@ Sk.builtins.__st__ = new Sk.builtin.func(function () {
     return 0;
 });
 
+// const sleep = (milliseconds) =>  new Promise(resolve => setTimeout(resolve, milliseconds))
 
-const sleep = (milliseconds) =>  new Promise(resolve => setTimeout(resolve, milliseconds))
+let sleepPromiseResolve: any;
+const sleep = (milliseconds) => {
+    let sleepPromise = new Promise(resolve => {
+        sleepPromiseResolve = resolve;
+        setTimeout(resolve, milliseconds);
+    });
+    return sleepPromise;
+}
 
 const srcBase=`
 import time
@@ -112,7 +168,10 @@ function outf(text) {
 }
 
 export function runProgram(src: string) {
-    stopProgram.set(false);
+    stopProgramFlag.set(false);
+    // pauseProgramFlag.set(false);
+    // endPause();
+
     const asyncFunc = async function() {
         Sk.configure({
             output: outf,
@@ -120,8 +179,10 @@ export function runProgram(src: string) {
             retainGlobals: true,
         });
 
+        interpreterState.set(InterpreterState.RUNNING);
+
         let suspension = Sk.importMainWithBody("base", false, srcBase, true);
-        while (suspension.$isSuspension && !stopProgramSubscription) {
+        while (suspension.$isSuspension && !stopProgramFlagSubscription) {
             if (suspension.data.type === 'Sk.promise') {
                 await suspension.data.promise;
             }
@@ -130,11 +191,10 @@ export function runProgram(src: string) {
 
         suspension = Sk.importMainWithBody("userSrc", false, src, true);
         let lastLineNumber = -1
-        while (suspension.$isSuspension && !stopProgramSubscription) {
+        while (suspension.$isSuspension && !stopProgramFlagSubscription) {
             if (suspension.child.$filename === "userSrc.py") {
                 if (suspension.child.$lineno !== lastLineNumber) {
                     lastLineNumber = suspension.child.$lineno;
-                    console.log(suspension.child.$lineno)                
                     currentLineNumber.set(suspension.child.$lineno)
                     await sleep(sleepTimerSubscription * 1000);
                 }
@@ -147,14 +207,21 @@ export function runProgram(src: string) {
             //     await sleep(0);
             // }
             suspension = suspension.resume();
+
+            // if (pauseProgramFlagSubscription) {
+            //     pauseProgramPromise = new Promise((resolve, reject) => pauseProgramPromiseResolve = resolve);
+            //     interpreterState.set(InterpreterState.PAUSED);
+            //     await pauseProgramPromise;
+            //     interpreterState.set(InterpreterState.RUNNING);
+            // }
         }
     }
 
     asyncFunc()
-        .then(() => console.log('fertig'))
-        .catch((e) => console.log(e));
+        .then(result => console.log(result))
+        .catch((e) => console.log(e))
+        .finally(() => interpreterState.set(InterpreterState.STOPPED));
 }
-
 
 // evtl. alternative Funktion zum Starten eines Programms:
 // function handleButtonRunClick() {

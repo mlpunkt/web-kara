@@ -51,7 +51,6 @@ function editorAction(node) {
     //     }
     // });
 
-    console.log('hier')
     // const ex = lineMarkExtension();
 
     // editorView = new EditorView({

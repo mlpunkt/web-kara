@@ -6,7 +6,7 @@
 	import MenuBottom from "./MenuBottom.svelte";
 
 	import Editor from './Editor.svelte';
-	import { currentLineNumber, runProgram } from "./interpreter";
+	import { currentLineNumber, runProgram, interpreterState, InterpreterState } from "./interpreter";
 	import { initialSrc } from "./initialSrc";
 
 	let editor: Editor;
@@ -36,7 +36,22 @@
 	<MenuBottom on:run={handleRun}/>
 	
 	<br>
-	<p>folgende Zeile wird ausgeführt: {$currentLineNumber}</p>
+	<!-- <p>folgende Zeile wird ausgeführt: {$currentLineNumber}</p> -->
+	<!-- <p>
+		Interpreter: {$interpreterState}
+	</p> -->
+
+	<p>
+		{#if $interpreterState === InterpreterState.STOPPED}
+			Programm gestoppt
+		{/if}
+		{#if $interpreterState === InterpreterState.RUNNING}
+			Programm läuft
+		{/if}
+		{#if $interpreterState === InterpreterState.PAUSED}
+			Programm pausiert
+		{/if}
+	</p>
 
 	<Editor bind:this={editor} initialText={initialSrc} />
 
