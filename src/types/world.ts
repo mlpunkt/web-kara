@@ -204,3 +204,5 @@ export const initialWorld = {
 } as World
 
 export const world = writable(initialWorld);
+
+export const worldBeforeLastRun = writable(initialWorld);

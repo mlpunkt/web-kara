@@ -1,22 +1,41 @@
 <script lang="ts">
 
-    import { dialog_closeChangeSizeDialog } from "../actions";
+    import { dialog_closeChangeSizeDialog, world_setSize } from "../actions";
 
     import { dialogState } from "../types/dialogState";
+    import { world } from "../types/world";
     import Dialog from "./Dialog.svelte";
 
 
     function handleOkClick() {
+        world_setSize(sizeX, sizeY);
         dialog_closeChangeSizeDialog();
     }
 
     function close() {
         dialog_closeChangeSizeDialog();
+    }    
+
+    let sizeX = 9;
+    let sizeY = 9;
+
+    // Der folgende Code erkennt, wenn der Dialog geöffnet wird und initialisiert sizeX und sizeY
+    let isOpen_old = false;
+    $: {
+        if (!isOpen_old && $dialogState.changeSize.isOpen) {
+            // Der Dialog wurde gerade geöffenet
+            sizeX = $world.sizeX;
+            sizeY = $world.sizeY;
+        }
+        isOpen_old = $dialogState.changeSize.isOpen
     }
 </script>
 
 <Dialog isOpen={$dialogState.changeSize.isOpen} on:close={close}>
-    Neue Größe für die Welt eingeben:
+    <p>Neue Größe für die Welt eingeben:<p>
+
+    <p>Größe nach rechts: <input type=number bind:value={sizeX} min=1 max=10> </p>
+    <p>Größe nach links: <input type=number bind:value={sizeY} min=1 max=10> </p>
     
     <button on:click={handleOkClick}>OK</button>
 </Dialog>

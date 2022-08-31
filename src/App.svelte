@@ -13,6 +13,7 @@
 	import Editor from './Editor.svelte';
 	import { runProgram, interpreterState, InterpreterState } from "./interpreter";
 	import { initialSrc } from "./initialSrc";
+import MenuTop from "./MenuTop.svelte";
 
 	let editor: Editor;
 
@@ -32,6 +33,7 @@
 
 	<br>
 
+	<MenuTop />
 	<div style="display: flex;">
 		<MenuLeft />
 		<World />

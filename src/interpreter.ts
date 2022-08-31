@@ -1,7 +1,7 @@
 import { writable } from 'svelte/store';
 import {kara_move, kara_turnLeft, kara_turnRight, output_addItem, world_putLeaf, world_removeLeaf} from './actions';
 import { OutputItemType } from './types/output';
-import { initialWorld, world, world_karaOnLeaf, world_mushroomFront, world_treeFront, world_treeLeft, world_treeRight } from './types/world';
+import { initialWorld, world, worldBeforeLastRun, world_karaOnLeaf, world_mushroomFront, world_treeFront, world_treeLeft, world_treeRight } from './types/world';
 
 let worldSubscription = initialWorld;
 world.subscribe(newWorld => worldSubscription = newWorld);
@@ -182,6 +182,8 @@ export function runProgram(src: string) {
     stopProgramFlag.set(false);
     // pauseProgramFlag.set(false);
     // endPause();
+
+    worldBeforeLastRun.set(worldSubscription);
 
     const asyncFunc = async function() {
         Sk.configure({
