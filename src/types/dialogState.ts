@@ -5,6 +5,9 @@ export interface DialogState {
         isOpen: boolean,
         title: string,
         message: string,
+    },
+    changeSize: {
+        isOpen: boolean,
     }
 }
 
@@ -13,6 +16,9 @@ const initialDialogState = {
         isOpen: false,
         title: '',
         message: '',
+    },
+    changeSize: {
+        isOpen: false,
     }
 } as DialogState
 

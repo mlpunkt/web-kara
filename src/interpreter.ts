@@ -28,16 +28,14 @@ export const pauseProgramFlag = writable(false);
 let pauseProgramFlagSubscription = false;
 pauseProgramFlag.subscribe(newPauseProgram => pauseProgramFlagSubscription = newPauseProgram);
 
-export const stopProgramFunc = writable(() => {
-    // if (pauseProgramPromiseResolve) {
-    //     pauseProgramPromiseResolve();
-    // }  
+export const stopProgramFunc = writable(stopProgram);
+
+function stopProgram() {
     stopProgramFlag.set(true);
     if (sleepPromiseResolve) {
         sleepPromiseResolve();
-    }
-        
-});
+    }   
+}
 
 export const pauseProgramFunc = writable(() => {
     // if (interpreterStateSubscription === InterpreterState.PAUSED) {
@@ -66,7 +64,11 @@ interpreterState.subscribe(newVal => interpreterStateSubscription = newVal);
 export const currentLineNumber = writable(1);
 
 Sk.builtins.__move__ = new Sk.builtin.func(function () {
-    kara_move();
+    const result = kara_move();
+    if (result) {
+        stopProgram();
+        output_addItem(OutputItemType.PYTHON_ERROR, result.message);
+    }
 });
 
 Sk.builtins.__turnRight__ = new Sk.builtin.func(function () {
@@ -78,11 +80,19 @@ Sk.builtins.__turnLeft__ = new Sk.builtin.func(function () {
 });
 
 Sk.builtins.__putLeaf__ = new Sk.builtin.func(function () {
-    world_putLeaf(worldSubscription.kara.position);
+    const result = world_putLeaf(worldSubscription.kara.position);
+    if (result) {
+        stopProgram();
+        output_addItem(OutputItemType.PYTHON_ERROR, result.message);
+    }
 });
 
 Sk.builtins.__removeLeaf__ = new Sk.builtin.func(function () {
-    world_removeLeaf(worldSubscription.kara.position);
+    const result = world_removeLeaf(worldSubscription.kara.position);
+    if (result) {
+        stopProgram();
+        output_addItem(OutputItemType.PYTHON_ERROR, result.message);
+    }
 });
 
 Sk.builtins.__treeFront__ = new Sk.builtin.func(function () {
@@ -165,7 +175,7 @@ kara = Kara()
 `;
 
 function outf(text) { 
-    console.log(text);
+    output_addItem(OutputItemType.PYTHON_PRINT, text);
 }
 
 export function runProgram(src: string) {
@@ -229,9 +239,11 @@ export function runProgram(src: string) {
             }
         })
         .catch(error => {
-            console.log(error);
+            // console.log(error);
             const errorMessage = 'Fehler im Python-Quelltext, vermutlich in Zeile ' + error.traceback[0].lineno.toString() + '.';
             output_addItem(OutputItemType.PYTHON_ERROR, errorMessage);
+            const errorMessage2 = error.args.v[0].v;
+            output_addItem(OutputItemType.PYTHON_ERROR, errorMessage2);
             output_addItem(OutputItemType.PYTHON_ERROR, 'Programm nach einem Fehler angehalten.');
         })
         .finally(() => interpreterState.set(InterpreterState.STOPPED));

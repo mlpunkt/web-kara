@@ -133,8 +133,8 @@ export function world_fieldHasMushroom(world, pos: Position) {
     }
 }
 
-export function world_fieldHasLeaf(world, pos: Position) {
-    const found = world.leafs.find(posOfTree => posOfTree.x === pos.x && posOfTree.y === pos.y);
+export function world_fieldHasLeaf(world: World, pos: Position) {
+    const found = world.leaves.find(posOfTree => posOfTree.x === pos.x && posOfTree.y === pos.y);
 
     if (found !== null && found !== undefined) {
         return true;
@@ -182,7 +182,7 @@ export interface World {
 
     trees: Array<Position>;
 
-    leafs: Array<Position>;
+    leaves: Array<Position>;
 
     mushrooms: Array<Position>;
 }
@@ -198,7 +198,7 @@ export const initialWorld = {
 
     trees: [{x: 3, y: 1}] as Array<Position>,
 
-    leafs: [{x: 0, y: 0}] as Array<Position>,
+    leaves: [{x: 0, y: 0}] as Array<Position>,
 
     mushrooms: [{x: 3, y: 3}] as Array<Position>,
 } as World

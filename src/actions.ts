@@ -126,7 +126,6 @@ export function kara_move() {
     if (world_fieldHasTree(worldSubscription, nextPosition)) {
         // kara steht vor einem Baum
         // kara kann in diese Richtung nicht laufen        
-        dialog_openMessageDialog('Fehler', 'Kara steht vor einem Baum und kann deshalb keinen Schritt machen.');
         return {
             message: 'Kara steht vor einem Baum und kann deshalb keinen Schritt machen.'
         }
@@ -233,12 +232,12 @@ export function world_toggleTree(pos: Position) {
 export function world_toggleLeaf(pos: Position) {
     world.update((world: World) => {
         const newLeafArray = world_fieldHasLeaf(world, pos)
-            ? world.leafs.filter(leafPos => !(leafPos.x === pos.x && leafPos.y === pos.y))
-            : [...world.leafs, pos]
+            ? world.leaves.filter(leafPos => !(leafPos.x === pos.x && leafPos.y === pos.y))
+            : [...world.leaves, pos]
 
         return {
             ...world,
-            leafs: newLeafArray,
+            leaves: newLeafArray,
         }
     });
 }
@@ -265,7 +264,7 @@ export function world_putLeaf(pos: Position) {
         world.update((world: World) => {
             return {
                 ...world,
-                leafs: [...world.leafs, pos],
+                leaves: [...world.leaves, pos],
             }        
         });
     }
@@ -277,13 +276,73 @@ export function world_removeLeaf(pos: Position) {
         world.update((world: World) => {
             return {
                 ...world,
-                leafs: world.leafs.filter(leafPos => !(leafPos.x === pos.x && leafPos.y === pos.y)),
+                leaves: world.leaves.filter(leafPos => !(leafPos.x === pos.x && leafPos.y === pos.y)),
             }        
         });
     } else {
         return {
             message: 'Auf dem Feld befindet sich kein Blatt. Kara kann deshalb kein Blatt aufheben.',
         }
+    }
+}
+
+const position_isInWorld = (sizeX: number, sizeY: number) => (position: Position) => position.x < sizeX && position.y < sizeY;
+const position_isNotOrigin = (position: Position) => !(position.x === 0 && position.y === 0);
+
+// export function world_setSize(sizeXNew: number, sizeYNew: number) {
+//     // Falls Kara außerhalb der neuen Welt ist: Kara auf Position (0,0) setzen, damit Kara sicher in der neuen Welt ist
+//     const kara_PositionAfterResize = position_isInWorld(worldSubscription.kara.position, sizeXNew, sizeYNew)
+//         ? worldSubscription.kara.position
+//         : {x:0, y:0}
+
+//     world.update((world: World) => {
+//         return {
+//             ...world,
+//             kara: {
+//                 ...world.kara,
+//                 position: kara_PositionAfterResize,
+//             },
+//             sizeX: sizeXNew,
+//             sizeY: sizeYNew,
+//         }
+//     });
+// }
+
+export function world_setSize(sizeXNew: number, sizeYNew: number) {
+    let position_isInNewWorld = position_isInWorld(sizeXNew, sizeYNew)
+    const newTrees = worldSubscription.trees.filter(position_isInNewWorld);
+    const newLeaves = worldSubscription.leaves.filter(position_isInNewWorld);
+    const newMushrooms = worldSubscription.mushrooms.filter(position_isInNewWorld);
+
+    if (position_isInNewWorld(worldSubscription.kara.position)) {
+        // Kara ist in der neuen Welt
+        world.update((world: World) => {
+            return {
+                ...world,
+                trees: newTrees,
+                leaves: newLeaves,
+                mushrooms: newMushrooms,
+                sizeX: sizeXNew,
+                sizeY: sizeYNew,
+            }
+        });
+    } else {
+        // Kara ist außerhalb der neuen Welt: Kara auf Position (0,0) setzen, damit Kara sicher in der neuen Welt ist
+        // Falls ein Baum oder ein Pilz auf Position (0,0) ist: entfernen, damit Kara dort sitzen kann
+        world.update((world: World) => {
+            return {
+                ...world,
+                kara: {
+                    ...world.kara,
+                    position:{x: 0, y:0},
+                },
+                trees: newTrees.filter(position_isNotOrigin),
+                leaves: newLeaves,
+                mushrooms: newMushrooms.filter(position_isNotOrigin),
+                sizeX: sizeXNew,
+                sizeY: sizeYNew,
+            }
+        });
     }
 }
 
@@ -296,6 +355,25 @@ export function uiState_setEditMode(editMode: EditMode) {
     });
 }
 
+export function dialog_openChangeSizeDialog() {
+    dialogState.update(dialogState => ({
+        ...dialogState,
+        changeSize: {
+            ...dialogState.changeSize,
+            isOpen: true,
+        }
+    }))
+}
+
+export function dialog_closeChangeSizeDialog() {
+    dialogState.update(dialogState => ({
+        ...dialogState,
+        changeSize: {
+            ...dialogState.changeSize,
+            isOpen: false,
+        }
+    }))
+}
 
 export function dialog_openMessageDialog(title: string, message: string) {
     dialogState.update((dialogState: DialogState) => {

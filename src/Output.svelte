@@ -1,5 +1,5 @@
 <script lang="ts">
-import { output, OutputItemType } from "./types/output";
+    import { output, OutputItemType } from "./types/output";
 
 </script>
 

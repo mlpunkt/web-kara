@@ -57,7 +57,7 @@
     {/each}
 
     <!-- Blätter  -->
-    {#each $world.leafs as pos}
+    {#each $world.leaves as pos}
         <g transform={"translate(" + pos.x * fieldSize + " " + pos.y*fieldSize + ")"}>
             <Leaf />
         </g>

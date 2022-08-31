@@ -6,6 +6,8 @@
 	import MenuBottom from "./MenuBottom.svelte";
 
 	import MessageDialog from "./dialog/MessageDialog.svelte";
+	import ChangeSizeDialog from "./dialog/ChangeSizeDialog.svelte";
+
 	import Output from "./Output.svelte";
 
 	import Editor from './Editor.svelte';
@@ -62,6 +64,7 @@
 	<button on:click={() => editor.highlightLine(2)}>test</button> -->
 
 	<MessageDialog />
+	<ChangeSizeDialog />
 
 	<Output />
 </main>

@@ -1,5 +1,5 @@
 <script lang="ts">
-    import {dialog_openMessageDialog, kara_move, kara_putLeaf, kara_removeLeaf, kara_turnLeft, kara_turnRight } from './actions';
+    import {dialog_openChangeSizeDialog, dialog_openMessageDialog, kara_move, kara_putLeaf, kara_removeLeaf, kara_turnLeft, kara_turnRight } from './actions';
     import { tooltip } from './tooltip';
 
     // https://joshuatz.com/posts/2021/using-svg-files-in-svelte/
@@ -29,6 +29,10 @@
         if (result) {
             dialog_openMessageDialog('Fehler', result.message);
         }
+    }
+
+    function handleChangeSizeClick() {
+        dialog_openChangeSizeDialog();
     }
 </script>
 
@@ -103,5 +107,7 @@
             src={iconRemoveLeaf} 
             alt="Icon Blatt aufnehmen"
         />
-    </button>    
+    </button>
+
+    <button on:click={handleChangeSizeClick}>Grösse der Welt ändern</button>
 </div>
