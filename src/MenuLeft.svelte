@@ -8,6 +8,7 @@
     import iconTurnRight from '../assets/iconTurnRight_normal.svg';
     import iconPutLeaf from '../assets/iconPutLeaf_normal.svg';
     import iconRemoveLeaf from '../assets/iconRemoveLeaf_normal.svg';
+    import iconSetSize from '../assets/iconSetSize_nromal.svg';
 
     function handleKaraMoveClick() {
         const result = kara_move();
@@ -109,5 +110,19 @@
         />
     </button>
 
-    <button on:click={handleChangeSizeClick}>Grösse der Welt ändern</button>
+
+    <button
+        title="Grösse der Welt ändern"
+        use:tooltip
+        class="iconButton"
+        on:click={handleChangeSizeClick}
+    >
+        <img
+            style="pointer-events: none;"
+            height="30px"
+            src={iconSetSize} 
+            alt="Icon Grösse der Welt ändernr"
+        />
+    </button>
+
 </div>

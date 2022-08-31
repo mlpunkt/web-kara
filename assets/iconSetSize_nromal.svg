@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="50"
+   height="50"
+   viewBox="0 0 50 50"
+   version="1.1"
+   id="svg5"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs2" />
+  <g
+     id="layer1">
+    <g
+       id="g1118">
+      <g
+         id="g1112" />
+    </g>
+    <g
+       id="g1118-4"
+       transform="rotate(90,27.25,29.25)">
+      <g
+         id="g1112-2">
+        <g
+           id="g1334">
+          <path
+             style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stop-color:#000000"
+             d="m 5,11.500021 v 30.5"
+             id="path416-2" />
+          <path
+             style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stop-color:#000000"
+             d="m 2,14.500021 3,-3 3,3"
+             id="path972-3" />
+          <path
+             style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stop-color:#000000"
+             d="m 2,39.5 3,3 3,-3"
+             id="path972-1-4" />
+        </g>
+        <g
+           id="g1334-0"
+           transform="rotate(90,5,50)">
+          <path
+             style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stop-color:#000000"
+             d="m 5,11.500021 v 30.5"
+             id="path416-2-7" />
+          <path
+             style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stop-color:#000000"
+             d="m 2,14.500021 3,-3 3,3"
+             id="path972-3-7" />
+          <path
+             style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stop-color:#000000"
+             d="m 2,39.5 3,3 3,-3"
+             id="path972-1-4-7" />
+        </g>
+      </g>
+    </g>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stop-color:#000000"
+       d="M 15,15 V 45"
+       id="path1177" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stop-color:#000000"
+       d="M 25,15 V 45"
+       id="path1177-5" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stop-color:#000000"
+       d="M 35,15.5 V 45"
+       id="path1177-50" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stop-color:#000000"
+       d="M 45,15 V 45"
+       id="path1177-0" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stop-color:#000000"
+       d="M 45,15 H 15"
+       id="path1177-3" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stop-color:#000000"
+       d="M 45,25 H 15"
+       id="path1177-3-0" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stop-color:#000000"
+       d="M 45,35 H 15"
+       id="path1177-3-00" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stop-color:#000000"
+       d="M 45,45 H 15"
+       id="path1177-3-09" />
+  </g>
+</svg>
