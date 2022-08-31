@@ -37,5 +37,6 @@
     <p>Größe nach rechts: <input type=number bind:value={sizeX} min=1 max=10> </p>
     <p>Größe nach links: <input type=number bind:value={sizeY} min=1 max=10> </p>
     
+    <button on:click={close}>Abbrechen</button>
     <button on:click={handleOkClick}>OK</button>
 </Dialog>

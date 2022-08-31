@@ -286,8 +286,19 @@ export function world_removeLeaf(pos: Position) {
     }
 }
 
+export function world_deleteEverythingFromField(pos: Position) {
+    world.update((world: World) => ({
+        ...world,
+
+        trees: world.trees.filter(position_equalsNot(pos)),
+        leaves: world.leaves.filter(position_equalsNot(pos)),
+        mushrooms: world.mushrooms.filter(position_equalsNot(pos)),
+    }));
+}
+
 const position_isInWorld = (sizeX: number, sizeY: number) => (position: Position) => position.x < sizeX && position.y < sizeY;
 const position_isNotOrigin = (position: Position) => !(position.x === 0 && position.y === 0);
+const position_equalsNot = (pos1: Position) => (pos2: Position) => !(pos1.x === pos2.x && pos1.y === pos2.y);
 
 // export function world_setSize(sizeXNew: number, sizeYNew: number) {
 //     // Falls Kara außerhalb der neuen Welt ist: Kara auf Position (0,0) setzen, damit Kara sicher in der neuen Welt ist

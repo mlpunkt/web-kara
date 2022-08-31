@@ -7,6 +7,7 @@
     import iconTree from '../assets/tree_normal.svg';
     import iconMushroom from '../assets/mushroom_normal.svg';
     import iconLeaf from '../assets/leaf_normal.svg';
+    import iconDelete from '../assets/iconDelete.svg';
 
     import { tooltip } from './tooltip';
     
@@ -25,6 +26,10 @@
 	function handleMushroomClick() {
 		uiState_setEditMode(EditMode.MUSHROOM);
 	}
+
+    function handleDeleteClick() {
+        uiState_setEditMode(EditMode.DELETE);
+    }
 
 
 </script>
@@ -90,6 +95,21 @@
             height="30px"
             src={iconLeaf} 
             alt="Blatt Baum setzen / löschen"
+        />
+    </button>
+
+    <button
+        title="Löschen"
+        use:tooltip
+        class="iconButton"
+        class:highlightButton={$uiState.editMode === EditMode.DELETE}
+        on:click={handleDeleteClick}
+    >
+        <img
+            style="pointer-events: none;"
+            height="30px"
+            src={iconDelete} 
+            alt="Icon löschen"
         />
     </button>
 </div>

@@ -8,7 +8,7 @@
 
     import {direction_rotationDegrees, world} from './types/world';
     import {uiState, EditMode } from './types/uiState';
-    import { kara_setPosition, world_toggleLeaf, world_toggleMushroom, world_toggleTree } from './actions';
+    import { kara_setPosition, world_deleteEverythingFromField, world_toggleLeaf, world_toggleMushroom, world_toggleTree } from './actions';
 
     const fieldSize = 50;
 
@@ -17,7 +17,7 @@
     $: rotateKara = 'rotate(' + direction_rotationDegrees($world.kara.direction)  + ',25,25)';
     $: viewBox = '0 0 ' + $world.sizeX * fieldSize + ' ' + $world.sizeY * fieldSize;
 
-    function handleClick(x: number, y: number) {
+    function handleMouseAction(x: number, y: number) {
         if ($uiState.editMode === EditMode.KARA) {
             kara_setPosition({x, y});
         } else if($uiState.editMode === EditMode.TREE) {
@@ -26,6 +26,18 @@
             world_toggleLeaf({x, y});
         } else if($uiState.editMode === EditMode.MUSHROOM) {
             world_toggleMushroom({x, y});
+        } else if($uiState.editMode === EditMode.DELETE) {
+            world_deleteEverythingFromField({x, y})
+        }
+    }
+
+    function handleMouseDown(x: number, y: number) {
+        handleMouseAction(x, y);
+    }
+
+    function handleMouseEnter(event: MouseEvent, x: number, y: number) {
+        if (event.buttons === 1) {
+            handleMouseAction(x, y);
         }
     }
 </script>
@@ -39,7 +51,8 @@
                 y={y*fieldSize}
                 width="50"
                 height="50" 
-                on:click={(event) => handleClick(x, y)}
+                on:mousedown={(event) => handleMouseDown(x, y)}
+                on:mouseenter={event => handleMouseEnter(event, x, y)}
                 style="fill:white"
             ></rect>
         {/each}
