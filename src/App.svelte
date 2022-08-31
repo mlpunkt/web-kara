@@ -5,6 +5,8 @@
 	import MenuRight from "./MenuRight.svelte";
 	import MenuBottom from "./MenuBottom.svelte";
 
+	import MessageDialog from "./dialog/MessageDialog.svelte";
+
 	import Editor from './Editor.svelte';
 	import { currentLineNumber, runProgram, interpreterState, InterpreterState } from "./interpreter";
 	import { initialSrc } from "./initialSrc";
@@ -20,7 +22,6 @@
 </script>
 
 <main>
-
 	<!-- <button on:click={() => console.log(world_treeFront($world))}>treeFront?</button>
 	<button on:click={() => console.log(world_treeLeft($world))}>treeLeft?</button>
 	<button on:click={() => console.log(world_treeRight($world))}>treeRight?</button>
@@ -58,4 +59,6 @@
 	<!-- <button on:click={() => editor.setText('test')}>test</button>
 	<button on:click={() => editor.highlightLine(1)}>test</button>
 	<button on:click={() => editor.highlightLine(2)}>test</button> -->
+
+	<MessageDialog />
 </main>

@@ -1,5 +1,5 @@
 <script lang="ts">
-    import {kara_move, kara_putLeaf, kara_removeLeaf, kara_turnLeft, kara_turnRight } from './actions';
+    import {dialog_openMessageDialog, kara_move, kara_putLeaf, kara_removeLeaf, kara_turnLeft, kara_turnRight } from './actions';
     import { tooltip } from './tooltip';
 
     // https://joshuatz.com/posts/2021/using-svg-files-in-svelte/
@@ -8,6 +8,28 @@
     import iconTurnRight from '../assets/iconTurnRight_normal.svg';
     import iconPutLeaf from '../assets/iconPutLeaf_normal.svg';
     import iconRemoveLeaf from '../assets/iconRemoveLeaf_normal.svg';
+
+    function handleKaraMoveClick() {
+        const result = kara_move();
+        if (result) {
+            // Es ist ein Fehler aufgetreten
+            dialog_openMessageDialog('Fehler', result.message);
+        }
+    }
+
+    function handlePutLeafClick() {
+        const result = kara_putLeaf();
+        if (result) {
+            dialog_openMessageDialog('Fehler', result.message);
+        }
+    }
+
+    function handleRemoveLeafClick() {
+        const result = kara_removeLeaf();
+        if (result) {
+            dialog_openMessageDialog('Fehler', result.message);
+        }
+    }
 </script>
 
 <div style=" display: flex; flex-direction: column; padding: 0.5em">
@@ -17,7 +39,7 @@
         title="Schritt vor"
         use:tooltip
         class="iconButton"
-        on:click={kara_move}
+        on:click={handleKaraMoveClick}
     >
         <img
             style="pointer-events: none;"
@@ -59,7 +81,7 @@
         title="Blatt legen"
         use:tooltip
         class="iconButton"
-        on:click={kara_putLeaf}
+        on:click={handlePutLeafClick}
     >
         <img
             style="pointer-events: none;"
@@ -73,7 +95,7 @@
         title="Blatt entfernen"
         use:tooltip
         class="iconButton"
-        on:click={kara_removeLeaf}
+        on:click={handleRemoveLeafClick}
     >
         <img
             style="pointer-events: none;"

@@ -2,6 +2,8 @@ import type { EditMode, UiState } from './types/uiState';
 import {Direction, direction_ccw, direction_cw, initialWorld, Position, World, world, world_fieldHasLeaf, world_fieldHasMushroom, world_fieldHasTree} from './types/world';
 import {uiState} from './types/uiState';
 
+import {DialogState, dialogState} from './types/dialogState';
+
 let worldSubscription = initialWorld;
 world.subscribe(newWorld => worldSubscription = newWorld);
 
@@ -72,23 +74,74 @@ const position_notEqual = (pos1: Position) => (pos2: Position) => {
     return !(pos1.x === pos2.x && pos1.y && pos2.y);
 }
 
-export function kara_move() {
-    world.update((world: World) => {
-        const nextPosition = nextPositionInDirection(world.kara.position, world.kara.direction, world.sizeX, world.sizeY);
+// export function kara_move() {
+//     world.update((world: World) => {
+//         const nextPosition = nextPositionInDirection(world.kara.position, world.kara.direction, world.sizeX, world.sizeY);
 
-        if (world_fieldHasTree(world, nextPosition)) {
-            // kara steht vor einem Baum
+//         if (world_fieldHasTree(world, nextPosition)) {
+//             // kara steht vor einem Baum
+//             // kara kann in diese Richtung nicht laufen        
+//             dialog_openMessageDialog('Fehler', 'Kara steht vor einem Baum und kann deshalb keinen Schritt machen.');
+//             return world;
+//         } else if(world_fieldHasMushroom(world, nextPosition)) {
+//             // kara steht vor einem Pilz
+//             const positonBehindMushroom = nextPositionInDirection(nextPosition, world.kara.direction, world.sizeX, world.sizeY);
+//             if (world_fieldHasTree(world, positonBehindMushroom) || world_fieldHasMushroom(world, positonBehindMushroom)) {
+//                 // hinter dem Pilz ist ein Baum oder ein anderer Pilz
+//                 // kara kann in diese Richtung nicht laufen
+//                 dialog_openMessageDialog('Fehler', 'Hinter dem Pilz ist ein Hindernis. Deshalb keinen Schritt machen.');
+//                 return world;                
+//             } else {
+//                 // kara kann den Pilz verschieben
+//                 return {
+//                     ...world,
+//                     kara: {
+//                         ...world.kara,
+//                         position: nextPosition,                        
+//                     },
+//                     mushrooms: [
+//                         ...world.mushrooms.filter(position_notEqual(nextPosition)),
+//                         positonBehindMushroom
+//                     ]
+//                 }
+//             }
+//         } else {
+//             // kara steht vor einem leeren Feld oder vor einem Blatt
+//             // kara läuft einen Schritt
+//             return {
+//                 ...world,
+//                 kara: {
+//                     ...world.kara,
+//                     position: nextPositionInDirection(world.kara.position, world.kara.direction, world.sizeX, world.sizeY),
+//                 }
+//             } as World;
+//         }
+//     });
+// }
+
+export function kara_move() {
+    const nextPosition = nextPositionInDirection(worldSubscription.kara.position, worldSubscription.kara.direction, worldSubscription.sizeX, worldSubscription.sizeY);
+
+    if (world_fieldHasTree(worldSubscription, nextPosition)) {
+        // kara steht vor einem Baum
+        // kara kann in diese Richtung nicht laufen        
+        dialog_openMessageDialog('Fehler', 'Kara steht vor einem Baum und kann deshalb keinen Schritt machen.');
+        return {
+            message: 'Kara steht vor einem Baum und kann deshalb keinen Schritt machen.'
+        }
+
+    } else if(world_fieldHasMushroom(worldSubscription, nextPosition)) {
+        // kara steht vor einem Pilz
+        const positonBehindMushroom = nextPositionInDirection(nextPosition, worldSubscription.kara.direction, worldSubscription.sizeX, worldSubscription.sizeY);
+        if (world_fieldHasTree(worldSubscription, positonBehindMushroom) || world_fieldHasMushroom(worldSubscription, positonBehindMushroom)) {
+            // hinter dem Pilz ist ein Baum oder ein anderer Pilz
             // kara kann in diese Richtung nicht laufen
-            return world;
-        } else if(world_fieldHasMushroom(world, nextPosition)) {
-            // kara steht vor einem Pilz
-            const positonBehindMushroom = nextPositionInDirection(nextPosition, world.kara.direction, world.sizeX, world.sizeY);
-            if (world_fieldHasTree(world, positonBehindMushroom) || world_fieldHasMushroom(world, positonBehindMushroom)) {
-                // hinter dem Pilz ist ein Baum oder ein anderer Pilz
-                // kara kann in diese Richtung nicht laufen
-                return world;                
-            } else {
-                // kara kann den Pilz verschieben
+            return {
+                message: 'Hinter dem Pilz ist ein Hindernis. Deshalb keinen Schritt machen.'
+            }
+        } else {
+            // kara kann den Pilz verschieben
+            world.update((world: World) => {
                 return {
                     ...world,
                     kara: {
@@ -100,10 +153,12 @@ export function kara_move() {
                         positonBehindMushroom
                     ]
                 }
-            }
-        } else {
-            // kara steht vor einem leeren Feld oder vor einem Blatt
-            // kara läuft einen Schritt
+            });
+        }
+    } else {
+        // kara steht vor einem leeren Feld oder vor einem Blatt
+        // kara läuft einen Schritt
+        world.update((world: World) => {
             return {
                 ...world,
                 kara: {
@@ -111,9 +166,11 @@ export function kara_move() {
                     position: nextPositionInDirection(world.kara.position, world.kara.direction, world.sizeX, world.sizeY),
                 }
             } as World;
-        }
-    });
-}
+        })
+    }
+};
+
+
 
 export function kara_turnRight() {
     world.update((world: World) => {
@@ -152,11 +209,11 @@ export function kara_setPosition(pos: Position) {
 }
 
 export function kara_putLeaf() {
-    world_putLeaf(worldSubscription.kara.position);
+    return world_putLeaf(worldSubscription.kara.position);
 }
 
 export function kara_removeLeaf() {
-    world_removeLeaf(worldSubscription.kara.position);
+    return world_removeLeaf(worldSubscription.kara.position);
 }
 
 export function world_toggleTree(pos: Position) {
@@ -199,29 +256,34 @@ export function world_toggleMushroom(pos: Position) {
 }
 
 export function world_putLeaf(pos: Position) {
-    world.update((world: World) => {
-        const newLeafArray = world_fieldHasLeaf(world, pos)
-            ? world.leafs
-            : [...world.leafs, pos]
-
+    if (world_fieldHasLeaf(worldSubscription, pos)) {
         return {
-            ...world,
-            leafs: newLeafArray,
-        }        
-    });
+            message: 'Auf dem Feld befindet sich bereits ein Blat. Deshalb kann Kara kein Blatt legen.',
+        }
+    } else {
+        world.update((world: World) => {
+            return {
+                ...world,
+                leafs: [...world.leafs, pos],
+            }        
+        });
+    }
+
 }
 
 export function world_removeLeaf(pos: Position) {
-    world.update((world: World) => {
-        const newLeafArray = world_fieldHasLeaf(world, pos)
-            ? world.leafs.filter(leafPos => !(leafPos.x === pos.x && leafPos.y === pos.y))
-            : world.leafs
-
+    if (world_fieldHasLeaf(worldSubscription, pos)) {
+        world.update((world: World) => {
+            return {
+                ...world,
+                leafs: world.leafs.filter(leafPos => !(leafPos.x === pos.x && leafPos.y === pos.y)),
+            }        
+        });
+    } else {
         return {
-            ...world,
-            leafs: newLeafArray,
-        }        
-    });
+            message: 'Auf dem Feld befindet sich kein Blatt. Kara kann deshalb kein Blatt aufheben.',
+        }
+    }
 }
 
 export function uiState_setEditMode(editMode: EditMode) {
@@ -231,4 +293,31 @@ export function uiState_setEditMode(editMode: EditMode) {
             editMode: editMode,
         }
     });
+}
+
+
+export function dialog_openMessageDialog(title: string, message: string) {
+    dialogState.update((dialogState: DialogState) => {
+        return {
+            ...dialogState,
+            message: {
+                isOpen: true,
+                title: title,
+                message: message,
+            }
+        }
+    });
+}
+
+export function dialog_closeMessageDialog() {
+    dialogState.update((dialogState: DialogState) => {
+        return {
+            ...dialogState,
+            message: {
+                isOpen: false,
+                title: '',
+                message: '',
+            }
+        }
+    });    
 }
