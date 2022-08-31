@@ -6,9 +6,10 @@
 	import MenuBottom from "./MenuBottom.svelte";
 
 	import MessageDialog from "./dialog/MessageDialog.svelte";
+	import Output from "./Output.svelte";
 
 	import Editor from './Editor.svelte';
-	import { currentLineNumber, runProgram, interpreterState, InterpreterState } from "./interpreter";
+	import { runProgram, interpreterState, InterpreterState } from "./interpreter";
 	import { initialSrc } from "./initialSrc";
 
 	let editor: Editor;
@@ -61,4 +62,6 @@
 	<button on:click={() => editor.highlightLine(2)}>test</button> -->
 
 	<MessageDialog />
+
+	<Output />
 </main>

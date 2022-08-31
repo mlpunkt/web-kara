@@ -3,6 +3,7 @@ import {Direction, direction_ccw, direction_cw, initialWorld, Position, World, w
 import {uiState} from './types/uiState';
 
 import {DialogState, dialogState} from './types/dialogState';
+import { Output, output, OutputItem, OutputItemType } from './types/output';
 
 let worldSubscription = initialWorld;
 world.subscribe(newWorld => worldSubscription = newWorld);
@@ -320,4 +321,12 @@ export function dialog_closeMessageDialog() {
             }
         }
     });    
+}
+
+export function output_reset() {
+    output.set([] as Array<OutputItem>)
+}
+
+export function output_addItem(type: OutputItemType, message: string) {
+    output.update(output => [...output, {type, message}]);
 }

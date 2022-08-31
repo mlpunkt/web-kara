@@ -1,5 +1,6 @@
 import { writable } from 'svelte/store';
-import {kara_move, kara_turnLeft, kara_turnRight, world_putLeaf, world_removeLeaf} from './actions';
+import {kara_move, kara_turnLeft, kara_turnRight, output_addItem, world_putLeaf, world_removeLeaf} from './actions';
+import { OutputItemType } from './types/output';
 import { initialWorld, world, world_karaOnLeaf, world_mushroomFront, world_treeFront, world_treeLeft, world_treeRight } from './types/world';
 
 let worldSubscription = initialWorld;
@@ -218,8 +219,21 @@ export function runProgram(src: string) {
     }
 
     asyncFunc()
-        .then(result => console.log(result))
-        .catch((e) => console.log(e))
+        .then(result => {
+            if (stopProgramFlagSubscription) {
+                // Das Programm wurde durch den Benutzer angehalgen
+                output_addItem(OutputItemType.GUI_ERROR, 'Programm wurde gestoppt.')
+            } else {
+                // Das Programm wurde erfolgreich beendet
+                output_addItem(OutputItemType.SUCCESS, 'Programm erfolgreich ausgeführt.')
+            }
+        })
+        .catch(error => {
+            console.log(error);
+            const errorMessage = 'Fehler im Python-Quelltext, vermutlich in Zeile ' + error.traceback[0].lineno.toString() + '.';
+            output_addItem(OutputItemType.PYTHON_ERROR, errorMessage);
+            output_addItem(OutputItemType.PYTHON_ERROR, 'Programm nach einem Fehler angehalten.');
+        })
         .finally(() => interpreterState.set(InterpreterState.STOPPED));
 }
 

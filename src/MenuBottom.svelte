@@ -10,10 +10,18 @@
     import iconStop from '../assets/iconStop_normal.svg';
     import iconPause from '../assets/iconPause_normal.svg';
     import iconStep from '../assets/iconStep_normal.svg';
+    import { output_addItem, output_reset } from './actions';
+    import { OutputItemType } from './types/output';
+
  
     function handleButtonRunClick() {
 		// runProgram($srcInEditor);
-        dispatch('run');
+        if ($interpreterState === InterpreterState.STOPPED) {
+            dispatch('run');
+            output_reset();
+        } else {
+           output_addItem(OutputItemType.GUI_ERROR, 'Das Programm läuft bereits.')
+        }
     }
 
     function handleButtonStopClick() {
@@ -48,6 +56,7 @@
         >
         <img
             style="pointer-events: none;"
+            class:highlightButton={$interpreterState === InterpreterState.RUNNING}
             height="30px"
             src={iconRun} 
             alt="Icon Programm starten"
@@ -100,3 +109,9 @@
 
  
 </div>
+
+<style>
+    .highlightButton {
+        background-color: red;
+    }
+</style>
