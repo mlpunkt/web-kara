@@ -1,8 +1,9 @@
 <script lang="ts">
 import {EditorView, basicSetup} from "codemirror"
+import {EditorState, Compartment} from "@codemirror/state";
 import {python} from "@codemirror/lang-python"
 import {lineHighlightField, addLineHighlight} from './lineMarkExtension';
-import {currentLineNumber} from './interpreter';
+import {currentLineNumber, InterpreterState, interpreterState} from './interpreter';
 
 export function getText() {
     if (editorView) {
@@ -29,6 +30,16 @@ $: {
     }
 }
 
+$: {
+    if (editorView) {
+        if ($interpreterState === InterpreterState.RUNNING || $interpreterState === InterpreterState.PAUSED) {
+            setReadOnly(true);
+        } else {
+            setReadOnly(false);
+        }
+    }
+}
+
 let editorView: EditorView;
 
 export function highlightLine(lineNo: number | null) {
@@ -39,6 +50,24 @@ export function highlightLine(lineNo: number | null) {
         editorView.dispatch({effects: addLineHighlight.of(null)});
     }
 }
+
+const readonly = EditorState.readOnly.of(true)
+
+let readOnlyCompartment = new Compartment;
+
+export function setReadOnly(readonly: boolean) {
+    editorView.dispatch({
+        effects: readOnlyCompartment.reconfigure(EditorState.readOnly.of(readonly)),
+    })
+
+    highlightLine($currentLineNumber);
+}
+
+// function setReadonly(view, size) {
+//   view.dispatch({
+//     effects: readOnlyCompartment.reconfigure(EditorState.tabSize.of(size))
+//   })
+// }
 
 function editorAction(node) {
     // the node has been mounted in the DOM
@@ -67,9 +96,11 @@ function editorAction(node) {
         // "&": {"flex-basis": "90%"},
         "&": {width: "100%", height: "100%"},
         // ".cm-scroller": {overflow: "auto"}
-    })
+    });
+
+
     editorView = new EditorView({
-        extensions: [basicSetup, python(), lineHighlightField, theme],
+        extensions: [basicSetup, readOnlyCompartment.of(readonly), python(), lineHighlightField, theme],
         parent: node
     });
 

@@ -110,6 +110,7 @@
         />
     </button>
 
+    <div style="height: 2em"></div>
 
     <button
         title="Grösse der Welt ändern"
