@@ -62,9 +62,14 @@ function editorAction(node) {
     //     parent: node
     // });
 
-
+    const theme = EditorView.theme({
+        // "&": {"max-height": "800px"},
+        // "&": {"flex-basis": "90%"},
+        "&": {width: "100%", height: "100%"},
+        // ".cm-scroller": {overflow: "auto"}
+    })
     editorView = new EditorView({
-        extensions: [basicSetup, python(), lineHighlightField],
+        extensions: [basicSetup, python(), lineHighlightField, theme],
         parent: node
     });
 
@@ -82,4 +87,16 @@ function editorAction(node) {
 
 </script>
 
-<div use:editorAction></div>
+<div id="codemirror-wrapper" use:editorAction></div>
+
+<style>
+    #codemirror-wrapper {
+        /* display: flex;
+        align-items: stretch; */
+        width: 100%;
+        /* height: 90%; */
+        height: calc(100% - 30px);
+        /* flex-basis: 80%;
+        flex-grow: 1; */
+    }
+</style>

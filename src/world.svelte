@@ -42,10 +42,12 @@
     }
 </script>
 
-<svg style="height: 300px;" viewBox={viewBox}>
+<!-- <svg style="height: 300px;" viewBox={viewBox}> -->
+<svg viewBox={viewBox}>
     <!-- Klickflächen  -->
-    {#each range(0, $world.sizeX) as x}
-        {#each range(0, $world.sizeY) as y}
+
+    {#each range(0, $world.sizeX - 1) as x}
+        {#each range(0, $world.sizeY - 1) as y}
             <rect 
                 x={x*fieldSize}
                 y={y*fieldSize}

@@ -10,17 +10,18 @@
 </script>
 
 
-
-<button
-    title="Welt zurücksetzen auf Zustand vor der letzen Programmausführung"
-    use:tooltip
-    class="iconButton"
-    on:click={handleResetWorldClick}
-    >
-    <img
-        style="pointer-events: none;"
-        height="30px"
-        src={iconWorldBeforeRun}
-        alt="Icon Welt zurücksetzen auf Zustand vor der letzen Programmausführung"
-    />
-</button>
+<div style="padding: 0.5em;">
+    <button
+        title="Welt zurücksetzen auf Zustand vor der letzen Programmausführung"
+        use:tooltip
+        class="iconButton"
+        on:click={handleResetWorldClick}
+        >
+        <img
+            style="pointer-events: none;"
+            height="30px"
+            src={iconWorldBeforeRun}
+            alt="Icon Welt zurücksetzen auf Zustand vor der letzen Programmausführung"
+        />
+    </button>
+</div>
