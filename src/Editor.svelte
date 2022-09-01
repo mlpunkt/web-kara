@@ -31,9 +31,13 @@ $: {
 
 let editorView: EditorView;
 
-export function highlightLine(lineNo) {
-    const docPosition = editorView.state.doc.line(lineNo).from;
-    editorView.dispatch({effects: addLineHighlight.of(docPosition)});
+export function highlightLine(lineNo: number | null) {
+    if (typeof lineNo === 'number') {
+        const docPosition = editorView.state.doc.line(lineNo).from;
+        editorView.dispatch({effects: addLineHighlight.of(docPosition)});
+    } else {
+        editorView.dispatch({effects: addLineHighlight.of(null)});
+    }
 }
 
 function editorAction(node) {

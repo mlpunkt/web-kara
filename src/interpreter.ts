@@ -61,7 +61,7 @@ export const interpreterState = writable(InterpreterState.STOPPED);
 let interpreterStateSubscription = InterpreterState.STOPPED;
 interpreterState.subscribe(newVal => interpreterStateSubscription = newVal);
 
-export const currentLineNumber = writable(1);
+export const currentLineNumber = writable<number | null>(null);
 
 Sk.builtins.__move__ = new Sk.builtin.func(function () {
     const result = kara_move();
@@ -248,7 +248,10 @@ export function runProgram(src: string) {
             output_addItem(OutputItemType.PYTHON_ERROR, errorMessage2);
             output_addItem(OutputItemType.PYTHON_ERROR, 'Programm nach einem Fehler angehalten.');
         })
-        .finally(() => interpreterState.set(InterpreterState.STOPPED));
+        .finally(() => {
+            interpreterState.set(InterpreterState.STOPPED)
+            currentLineNumber.set(null);
+        });
 }
 
 // evtl. alternative Funktion zum Starten eines Programms:

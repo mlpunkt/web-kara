@@ -3,17 +3,19 @@
 import {StateField, StateEffect} from '@codemirror/state';
 import {EditorView, Decoration} from '@codemirror/view';
 
-export const addLineHighlight = StateEffect.define<number>();
+export const addLineHighlight = StateEffect.define<number | null>();
 
 export const lineHighlightField = StateField.define({
   create() {
     return Decoration.none;
   },
   update(lines, tr) {
-    lines = lines.map(tr.changes);
+    // console.log(tr)
+    
+    // lines = lines.map(tr.changes);
+    lines = Decoration.none;
     for (let e of tr.effects) {
-      if (e.is(addLineHighlight)) {
-        lines = Decoration.none;
+      if (e.is(addLineHighlight) && typeof e.value === 'number') {        
         lines = lines.update({add: [lineHighlightMark.range(e.value)]});
       }
     }
@@ -25,4 +27,3 @@ export const lineHighlightField = StateField.define({
 const lineHighlightMark = Decoration.line({
     attributes: {style: 'background-color: yellow'},
 });
-
