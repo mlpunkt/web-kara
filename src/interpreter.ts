@@ -29,12 +29,13 @@ export const pauseProgramFlag = writable(false);
 let pauseProgramFlagSubscription = false;
 pauseProgramFlag.subscribe(newPauseProgram => pauseProgramFlagSubscription = newPauseProgram);
 
-// export const stopProgramFunc = writable(stopProgram);
-
 export function stopProgram() {
     stopProgramFlag.set(true);
     if (sleepPromiseResolve) {
         sleepPromiseResolve();
+    }
+    if (pauseProgramPromiseResolve) {
+        pauseProgramPromiseResolve();
     }
 }
 
@@ -45,7 +46,19 @@ export function pauseProgram() {
     }
 }
 
-// export const resumeProgramFunc = writable(() => pauseProgramFlag.set(false));
+export function step() {
+    // ruft suspension.resume() auf, bis im Code des Benutzers eine andere Zeile erreicht ist
+    let stepDone = false;
+
+    while (!stepDone) {
+        suspension = suspension.resume();
+        if (suspension.child.$filename === "userSrc.py" && lastLineNumber !== suspension.child.$lineno) {
+            stepDone = true;
+            currentLineNumber.set(suspension.child.$lineno)
+            lastLineNumber = suspension.child.$lineno;
+        }
+    }
+}
 
 export enum InterpreterState {
     STOPPED = "STOPPED",
@@ -176,6 +189,9 @@ function outf(text) {
     output_addItem(OutputItemType.PYTHON_PRINT, text);
 }
 
+let suspension;
+let lastLineNumber = -1;
+
 export function runProgram(src: string) {
     stopProgramFlag.set(false);
     pauseProgramFlag.set(false);
@@ -191,7 +207,7 @@ export function runProgram(src: string) {
 
         interpreterState.set(InterpreterState.RUNNING);
 
-        let suspension = Sk.importMainWithBody("base", false, srcBase, true);
+        suspension = Sk.importMainWithBody("base", false, srcBase, true);
         while (suspension.$isSuspension && !stopProgramFlagSubscription) {
             if (suspension.data.type === 'Sk.promise') {
                 await suspension.data.promise;
@@ -200,14 +216,25 @@ export function runProgram(src: string) {
         }
 
         suspension = Sk.importMainWithBody("userSrc", false, src, true);
-        let lastLineNumber = -1
+        lastLineNumber = -1;
         while (suspension.$isSuspension && !stopProgramFlagSubscription) {
             if (suspension.child.$filename === "userSrc.py") {
                 if (suspension.child.$lineno !== lastLineNumber) {
                     lastLineNumber = suspension.child.$lineno;
                     currentLineNumber.set(suspension.child.$lineno)
+
+                    // if (interpreterStateSubscription === InterpreterState.RUNNING) {
+                    //     await sleep(sleepTimerSubscription * 1000);
+                    // }
                     await sleep(sleepTimerSubscription * 1000);
-                }
+
+                    if (pauseProgramFlagSubscription) {
+                        const pauseProgramPromise = new Promise((resolve, reject) => pauseProgramPromiseResolve = resolve);
+                        interpreterState.set(InterpreterState.PAUSED);
+                        await pauseProgramPromise;
+                        interpreterState.set(InterpreterState.RUNNING);
+                    }
+                }                
             }
             // if (test.data.type === 'Sk.promise') {
             //     await test.data.promise;
@@ -216,14 +243,8 @@ export function runProgram(src: string) {
             //     // Parameter 0: Warten bis zum nächsen Event Cycle
             //     await sleep(0);
             // }
-            suspension = suspension.resume();
 
-            if (pauseProgramFlagSubscription) {
-                const pauseProgramPromise = new Promise((resolve, reject) => pauseProgramPromiseResolve = resolve);
-                interpreterState.set(InterpreterState.PAUSED);
-                await pauseProgramPromise;
-                interpreterState.set(InterpreterState.RUNNING);
-            }
+            suspension = suspension.resume();
         }
     }
 

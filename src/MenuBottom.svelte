@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { sleepTimer, stopProgram, interpreterState, InterpreterState, endPause, pauseProgram} from './interpreter';
+    import { sleepTimer, stopProgram, interpreterState, InterpreterState, endPause, pauseProgram, step} from './interpreter';
     import { tooltip } from './tooltip';
     import { createEventDispatcher } from 'svelte';
 
@@ -36,18 +36,12 @@
         } else if ($interpreterState === InterpreterState.PAUSED) {
             endPause();
         }
-
-        //$pauseProgramFunc();
-        // // pauseProgram.update(oldValue => !oldValue);
-        // if ($pauseProgram){
-        //     $resumeProgramFunc();
-        // } else {
-        //     $pauseProgramFunc();
-        // }
     }
 
     function handleButtonStepClick() {
-
+        if ($interpreterState === InterpreterState.PAUSED) {
+            step();
+        }
     }
 </script>
 
@@ -63,7 +57,7 @@
         >
         <img
             style="pointer-events: none;"
-            class:highlightButton={$interpreterState === InterpreterState.RUNNING}
+            class:highlightButtonRed={$interpreterState === InterpreterState.RUNNING}
             height="30px"
             src={iconRun} 
             alt="Icon Programm starten"
@@ -91,11 +85,12 @@
         use:tooltip
         class="iconButton"
         on:click={handleButtonPauseClick}
+        class:highlightButtonGreen={$interpreterState === InterpreterState.PAUSED}
         >
         <img
             style="pointer-events: none;"
             height="30px"
-            src={iconPause} 
+            src={iconPause}
             alt="Icon Programm pausieren"
         />
     </button>
@@ -105,6 +100,7 @@
         use:tooltip
         class="iconButton"
         on:click={handleButtonStepClick}
+        class:highlightButtonGreen={$interpreterState === InterpreterState.PAUSED}
         >
         <img
             style="pointer-events: none;"
@@ -118,7 +114,11 @@
 </div>
 
 <style>
-    .highlightButton {
+    .highlightButtonRed {
         background-color: red;
+    }
+
+    .highlightButtonGreen {
+        background-color: green;
     }
 </style>
