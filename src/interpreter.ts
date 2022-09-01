@@ -12,13 +12,14 @@ sleepTimer.subscribe(newSleepTimer => sleepTimerSubscription = newSleepTimer);
 
 
 // let pauseProgramPromise: any; //Promise<>;
-// let pauseProgramPromiseResolve: any;
+let pauseProgramPromiseResolve: any;
 
-// function endPause() {
-//     if (pauseProgramPromiseResolve) {
-//         pauseProgramPromiseResolve();
-//     }
-// }
+export function endPause() {
+    if (pauseProgramPromiseResolve) {
+        pauseProgramPromiseResolve();
+    }
+    pauseProgramFlag.set(false);
+}
 
 const stopProgramFlag = writable(false);
 let stopProgramFlagSubscription = false;
@@ -28,26 +29,21 @@ export const pauseProgramFlag = writable(false);
 let pauseProgramFlagSubscription = false;
 pauseProgramFlag.subscribe(newPauseProgram => pauseProgramFlagSubscription = newPauseProgram);
 
-export const stopProgramFunc = writable(stopProgram);
+// export const stopProgramFunc = writable(stopProgram);
 
-function stopProgram() {
+export function stopProgram() {
     stopProgramFlag.set(true);
     if (sleepPromiseResolve) {
         sleepPromiseResolve();
-    }   
+    }
 }
 
-export const pauseProgramFunc = writable(() => {
-    // if (interpreterStateSubscription === InterpreterState.PAUSED) {
-    //     pauseProgramFlag.set(false);
-    //     endPause();
-    // } else {
-    //     pauseProgramFlag.set(true);
-    //     // if (sleepPromiseResolve) {
-    //     //     sleepPromiseResolve()
-    //     // }
-    // }
-});
+export function pauseProgram() {
+    pauseProgramFlag.set(true);
+    if (sleepPromiseResolve) {
+        sleepPromiseResolve();
+    }
+}
 
 // export const resumeProgramFunc = writable(() => pauseProgramFlag.set(false));
 
@@ -182,8 +178,7 @@ function outf(text) {
 
 export function runProgram(src: string) {
     stopProgramFlag.set(false);
-    // pauseProgramFlag.set(false);
-    // endPause();
+    pauseProgramFlag.set(false);
 
     worldBeforeLastRun.set(worldSubscription);
 
@@ -223,12 +218,12 @@ export function runProgram(src: string) {
             // }
             suspension = suspension.resume();
 
-            // if (pauseProgramFlagSubscription) {
-            //     pauseProgramPromise = new Promise((resolve, reject) => pauseProgramPromiseResolve = resolve);
-            //     interpreterState.set(InterpreterState.PAUSED);
-            //     await pauseProgramPromise;
-            //     interpreterState.set(InterpreterState.RUNNING);
-            // }
+            if (pauseProgramFlagSubscription) {
+                const pauseProgramPromise = new Promise((resolve, reject) => pauseProgramPromiseResolve = resolve);
+                interpreterState.set(InterpreterState.PAUSED);
+                await pauseProgramPromise;
+                interpreterState.set(InterpreterState.RUNNING);
+            }
         }
     }
 

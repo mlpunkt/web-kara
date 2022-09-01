@@ -1,5 +1,5 @@
 <script lang="ts">
-    import {pauseProgramFunc, sleepTimer, stopProgramFunc, interpreterState, InterpreterState} from './interpreter';
+    import { sleepTimer, stopProgram, interpreterState, InterpreterState, endPause, pauseProgram} from './interpreter';
     import { tooltip } from './tooltip';
     import { createEventDispatcher } from 'svelte';
 
@@ -26,11 +26,18 @@
 
     function handleButtonStopClick() {
         // stopProgram.set(true);
-        $stopProgramFunc()
+        // $stopProgramFunc()
+        stopProgram()
     }
 
     function handleButtonPauseClick() {
-        $pauseProgramFunc();
+        if ($interpreterState === InterpreterState.RUNNING) {
+            pauseProgram();
+        } else if ($interpreterState === InterpreterState.PAUSED) {
+            endPause();
+        }
+
+        //$pauseProgramFunc();
         // // pauseProgram.update(oldValue => !oldValue);
         // if ($pauseProgram){
         //     $resumeProgramFunc();
