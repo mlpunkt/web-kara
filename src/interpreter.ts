@@ -61,7 +61,9 @@ export const interpreterState = writable(InterpreterState.STOPPED);
 let interpreterStateSubscription = InterpreterState.STOPPED;
 interpreterState.subscribe(newVal => interpreterStateSubscription = newVal);
 
+let currentLineNumberSubscription = null;
 export const currentLineNumber = writable<number | null>(null);
+currentLineNumber.subscribe(newVal => currentLineNumberSubscription = newVal);
 
 Sk.builtins.__move__ = new Sk.builtin.func(function () {
     const result = kara_move();
@@ -234,10 +236,10 @@ export function runProgram(src: string) {
         .then(result => {
             if (stopProgramFlagSubscription) {
                 // Das Programm wurde durch den Benutzer angehalgen
-                output_addItem(OutputItemType.GUI_ERROR, 'Programm wurde gestoppt.')
+                output_addItem(OutputItemType.GUI_ERROR, 'Das Programm wurde gestoppt in Zeile ' + currentLineNumberSubscription + ' .');
             } else {
                 // Das Programm wurde erfolgreich beendet
-                output_addItem(OutputItemType.SUCCESS, 'Programm erfolgreich ausgeführt.')
+                output_addItem(OutputItemType.SUCCESS, 'Das Programm erfolgreich ausgeführt.')
             }
         })
         .catch(error => {

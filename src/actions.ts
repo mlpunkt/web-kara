@@ -137,7 +137,7 @@ export function kara_move() {
             // hinter dem Pilz ist ein Baum oder ein anderer Pilz
             // kara kann in diese Richtung nicht laufen
             return {
-                message: 'Hinter dem Pilz ist ein Hindernis. Deshalb keinen Schritt machen.'
+                message: 'Hinter dem Pilz ist ein Hindernis. Deshalb kann Kara keinen Schritt machen.'
             }
         } else {
             // kara kann den Pilz verschieben
