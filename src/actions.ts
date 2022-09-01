@@ -197,13 +197,19 @@ export function kara_turnLeft() {
 }
 
 export function kara_setPosition(pos: Position) {
+    // Falls sich ein Pilz oder ein Baum auf pos befindet: Entfernen
+    const mushroomsNew = worldSubscription.mushrooms.filter(position_equalsNot(pos));
+    const treesNew = worldSubscription.trees.filter(position_equalsNot(pos));
+
     world.update((world: World) => {
         return {
             ...world,
             kara: {
                 ...world.kara,
                 position: pos,
-            }
+            },
+            mushrooms: mushroomsNew,
+            trees: treesNew,
         }
     });
 }
@@ -217,42 +223,91 @@ export function kara_removeLeaf() {
 }
 
 export function world_toggleTree(pos: Position) {
-    world.update((world: World) => {
-        const newTreeArray = world_fieldHasTree(world, pos)
-            ? world.trees.filter(treePos => !(treePos.x === pos.x && treePos.y === pos.y))
-            : [...world.trees, pos]
+    if (position_equalsNot(worldSubscription.kara.position)(pos)) {
+        // Kara sitzt nicht auf pos
+        
+        world.update((world: World) => {
+            // const newTreeArray = world_fieldHasTree(world, pos)
+            //     ? world.trees.filter(treePos => !(treePos.x === pos.x && treePos.y === pos.y))
+            //     : [...world.trees, pos]
+            if (world_fieldHasTree(world, pos)) {
+                // Baum entfernen
+                const newTreeArray = world.trees.filter(treePos => !(treePos.x === pos.x && treePos.y === pos.y));
+                return {
+                    ...world,
+                    trees: newTreeArray,
+                }
+            } else {
+                // Baum hinzufügen
+                const newTreeArray = [...world.trees, pos];
 
-        return {
-            ...world,
-            trees: newTreeArray,
-        }
-    });
+                // Falls ein Pilz oder ein Blatt auf pos sitzt: entfernen
+                const newLeaves = world.leaves.filter(position_equalsNot(pos));
+                const newMushrooms = world.mushrooms.filter(position_equalsNot(pos));
+
+                return {
+                    ...world,
+                    trees: newTreeArray,
+                    leaves: newLeaves,
+                    mushrooms: newMushrooms,
+                }
+            }
+
+        });
+    }
+
 }
 
 export function world_toggleLeaf(pos: Position) {
     world.update((world: World) => {
-        const newLeafArray = world_fieldHasLeaf(world, pos)
-            ? world.leaves.filter(leafPos => !(leafPos.x === pos.x && leafPos.y === pos.y))
-            : [...world.leaves, pos]
+        if (world_fieldHasLeaf(world, pos)) {
+            // Blatt entfernen
+            const newLeaves = world.leaves.filter(leafPos => !(leafPos.x === pos.x && leafPos.y === pos.y));
+            return {
+                ...world,
+                leaves: newLeaves,
+            }
+        } else {
+            // Blatt hinzufügen
+            const newLeaves = [...world.leaves, pos];
 
-        return {
-            ...world,
-            leaves: newLeafArray,
+            // Falls ein Baum auf dieser Position ist: entfernen
+            const newTrees =  world.trees.filter(position_equalsNot(pos));
+
+            return {
+                ...world,
+                leaves: newLeaves,
+                trees: newTrees,
+            }
         }
     });
 }
 
 export function world_toggleMushroom(pos: Position) {
-    world.update((world: World) => {
-        const newMushroomArray = world_fieldHasMushroom(world, pos)
-            ? world.mushrooms.filter(mushroomPos => !(mushroomPos.x === pos.x && mushroomPos.y === pos.y))
-            : [...world.mushrooms, pos]
+    if (position_equalsNot(worldSubscription.kara.position)(pos)) {
+        // Kara sitzt nicht auf pos
+        world.update((world: World) => {
+            if (world_fieldHasMushroom(world, pos)) {
+                // Pilz entfernen
+                const newMushrooms = world.mushrooms.filter(mushroomPos => !(mushroomPos.x === pos.x && mushroomPos.y === pos.y));
+                return {
+                    ...world,
+                    mushrooms: newMushrooms,
+                }
+            } else {
+                // Pilz hinzufügen
+                const newMushrooms = [...world.mushrooms, pos];
 
-        return {
-            ...world,
-            mushrooms: newMushroomArray,
-        }
-    });
+                // Falls ein Baum auf dieser Position ist: entfernen
+                const newTrees = world.trees.filter(position_equalsNot(pos));
+                return {
+                    ...world,
+                    mushrooms: newMushrooms,
+                    trees: newTrees,
+                }
+            }
+        });
+    }
 }
 
 export function world_putLeaf(pos: Position) {
@@ -299,25 +354,6 @@ export function world_deleteEverythingFromField(pos: Position) {
 const position_isInWorld = (sizeX: number, sizeY: number) => (position: Position) => position.x < sizeX && position.y < sizeY;
 const position_isNotOrigin = (position: Position) => !(position.x === 0 && position.y === 0);
 const position_equalsNot = (pos1: Position) => (pos2: Position) => !(pos1.x === pos2.x && pos1.y === pos2.y);
-
-// export function world_setSize(sizeXNew: number, sizeYNew: number) {
-//     // Falls Kara außerhalb der neuen Welt ist: Kara auf Position (0,0) setzen, damit Kara sicher in der neuen Welt ist
-//     const kara_PositionAfterResize = position_isInWorld(worldSubscription.kara.position, sizeXNew, sizeYNew)
-//         ? worldSubscription.kara.position
-//         : {x:0, y:0}
-
-//     world.update((world: World) => {
-//         return {
-//             ...world,
-//             kara: {
-//                 ...world.kara,
-//                 position: kara_PositionAfterResize,
-//             },
-//             sizeX: sizeXNew,
-//             sizeY: sizeYNew,
-//         }
-//     });
-// }
 
 export function world_setSize(sizeXNew: number, sizeYNew: number) {
     let position_isInNewWorld = position_isInWorld(sizeXNew, sizeYNew)
