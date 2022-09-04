@@ -393,6 +393,10 @@ export function world_setSize(sizeXNew: number, sizeYNew: number) {
     }
 }
 
+export function world_set(newWorld: World) {
+    world.set(newWorld);
+}
+
 export function uiState_setEditMode(editMode: EditMode) {
     uiState.update((uiState: UiState) => {
         return {

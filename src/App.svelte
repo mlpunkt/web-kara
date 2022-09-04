@@ -18,6 +18,19 @@
 
 	let editor: Editor;
 
+	function handleEditorSave(event) {
+		const src = editor.getText();
+
+		const link = document.createElement('a');
+		link.download = event.detail.filename + '.py'
+        link.href = ('data:text/plain;charset=utf-8,') + encodeURIComponent(src);
+        link.click();
+	}
+
+	function handleEditorLoad(evt) {
+		editor.setText(evt.detail.text);
+	}
+
 	function handleRun() {
 		const src = editor.getText();
 		const breakpoints = editor.getBreakpoints();
@@ -40,7 +53,7 @@
 
 		<div style="display: flex; flex-direction: column; align-items: stretch; flex-grow: 1">
 		<!-- <div> -->
-			<MenuEditor />
+			<MenuEditor on:save={handleEditorSave} on:load={handleEditorLoad}/>
 			<Editor bind:this={editor} initialText={initialSrc} />			
 		</div>
 	</div>
