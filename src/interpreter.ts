@@ -231,14 +231,19 @@ export function runProgram(src: string, breakpoints: Array<number>) {
                         pauseProgramFlag.set(true);
                     }
 
-                    await sleep(sleepTimerSubscription * 1000);
+                    // await sleep(sleepTimerSubscription * 1000);
 
                     if (pauseProgramFlagSubscription) {
                         const pauseProgramPromise = new Promise((resolve, reject) => pauseProgramPromiseResolve = resolve);
                         interpreterState.set(InterpreterState.PAUSED);
                         await pauseProgramPromise;
                         interpreterState.set(InterpreterState.RUNNING);
+                    } else {
+                        await sleep(sleepTimerSubscription * 1000);
                     }
+
+                    // if (interpreterStateSubscription === InterpreterState.RUNNING) {
+                    // }
                 }                
             }
             // if (test.data.type === 'Sk.promise') {
