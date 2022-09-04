@@ -187,20 +187,36 @@ export interface World {
     mushrooms: Array<Position>;
 }
 
+// export const initialWorld = {
+//     sizeX: 6,
+//     sizeY: 6,
+
+//     kara: {
+//         position: {x: 0, y: 1},
+//         direction: Direction.RIGHT
+//     },
+
+//     trees: [{x: 3, y: 1}] as Array<Position>,
+
+//     leaves: [{x: 0, y: 0}] as Array<Position>,
+
+//     mushrooms: [{x: 3, y: 3}] as Array<Position>,
+// } as World
+
 export const initialWorld = {
     sizeX: 6,
     sizeY: 6,
 
     kara: {
-        position: {x: 0, y: 1},
+        position: {x: 1, y: 1},
         direction: Direction.RIGHT
     },
 
-    trees: [{x: 3, y: 1}] as Array<Position>,
+    trees: [] as Array<Position>,
 
-    leaves: [{x: 0, y: 0}] as Array<Position>,
+    leaves: [] as Array<Position>,
 
-    mushrooms: [{x: 3, y: 3}] as Array<Position>,
+    mushrooms: [] as Array<Position>,
 } as World
 
 export const world = writable(initialWorld);

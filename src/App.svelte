@@ -30,7 +30,6 @@
 
 	function saveWorld() {
 		var link = document.createElement('a');
-        // link.download = 'circuit.json';
         link.download = $worldFilename + '.world'
         link.href = ('data:text/plain;charset=utf-8,') + JSON.stringify($world);
         link.click();
@@ -39,10 +38,6 @@
 	function handleEditorSave() {
 		const src = editor.getText();
 		saveSrc(src);
-		// const link = document.createElement('a');
-		// link.download = event.detail.filename + '.py'
-        // link.href = ('data:text/plain;charset=utf-8,') + encodeURIComponent(src);
-        // link.click();
 	}
 
 	function handleEditorLoad(evt) {		
@@ -85,7 +80,7 @@
 		<div style="display: flex; flex-direction: column; align-items: stretch; flex-grow: 1">
 		<!-- <div> -->
 			<MenuEditor on:save={handleEditorSave} on:load={handleEditorLoad}/>
-			<Editor bind:this={editor} initialText={initialSrc} />			
+			<Editor bind:this={editor} initialText={initialSrc} />
 		</div>
 	</div>
 

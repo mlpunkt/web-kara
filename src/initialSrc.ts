@@ -7,17 +7,30 @@ export let initialSrc =
 # kara.treeFront()  kara.treeRight() kara.treeLeft()
 # kara.onLeaf  kara.mushroomFront()
 
-while True:
-    while not kara.treeFront():
-        kara.move()
-    kara.turnRight()
-    kara.move()
-    kara.turnLeft()
-    kara.move()
-    kara.move()
-    kara.turnLeft()
-    kara.move()
-    kara.turnRight()`
+kara.move()
+kara.putLeaf()`
+
+
+// export let initialSrc = 
+// `# BEFEHLE:
+// # kara.move()  kara.turnRight()  kara.turnLeft()
+// # kara.putLeaf()  kara.removeLeaf()
+// #
+// # SENSOREN:
+// # kara.treeFront()  kara.treeRight() kara.treeLeft()
+// # kara.onLeaf  kara.mushroomFront()
+
+// while True:
+//     while not kara.treeFront():
+//         kara.move()
+//     kara.turnRight()
+//     kara.move()
+//     kara.turnLeft()
+//     kara.move()
+//     kara.move()
+//     kara.turnLeft()
+//     kara.move()
+//     kara.turnRight()`
 
 
 

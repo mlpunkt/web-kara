@@ -10,11 +10,6 @@
 
     function handleButtonSaveClick() {
         dispatch('save');
-        // var link = document.createElement('a');
-        // // link.download = 'circuit.json';
-        // link.download = filename + '.world'
-        // link.href = ('data:text/plain;charset=utf-8,') + JSON.stringify($world);
-        // link.click();
     }
 
     function handleResetWorldClick() {

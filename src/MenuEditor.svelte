@@ -3,8 +3,6 @@
     const dispatch = createEventDispatcher();
     import {saveSrcOnStart, srcFilename} from './types/save';
 
-    // let filename = 'quellcode';
-
     function handleButtonSaveClick() {
         dispatch('save');
     }
