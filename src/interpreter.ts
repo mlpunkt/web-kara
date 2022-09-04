@@ -192,7 +192,7 @@ function outf(text) {
 let suspension;
 let lastLineNumber = -1;
 
-export function runProgram(src: string) {
+export function runProgram(src: string, breakpoints: Array<number>) {
     stopProgramFlag.set(false);
     pauseProgramFlag.set(false);
 
@@ -226,6 +226,11 @@ export function runProgram(src: string) {
                     // if (interpreterStateSubscription === InterpreterState.RUNNING) {
                     //     await sleep(sleepTimerSubscription * 1000);
                     // }
+
+                    if (breakpoints.includes(suspension.child.$lineno)) {
+                        pauseProgramFlag.set(true);
+                    }
+
                     await sleep(sleepTimerSubscription * 1000);
 
                     if (pauseProgramFlagSubscription) {

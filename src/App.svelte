@@ -20,7 +20,8 @@
 
 	function handleRun() {
 		const src = editor.getText();
-		runProgram(src);
+		const breakpoints = editor.getBreakpoints();
+		runProgram(src, breakpoints);
 	}
 </script>
 

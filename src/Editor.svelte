@@ -4,6 +4,7 @@ import {EditorState, Compartment} from "@codemirror/state";
 import {python} from "@codemirror/lang-python"
 import {lineHighlightField, addLineHighlight} from './lineMarkExtension';
 import {currentLineNumber, InterpreterState, interpreterState} from './interpreter';
+import { breakpointGutter, breakpointState } from "./BreakpointGutter";
 
 export function getText() {
     if (editorView) {
@@ -41,6 +42,20 @@ $: {
 }
 
 let editorView: EditorView;
+
+export function getBreakpoints() {
+    // console.log(editorView.state.field(breakpointState));
+    const stateField = editorView.state.field(breakpointState)
+    const breakpoints = [] as Array<number>;
+    let iter = stateField.iter();
+    while (iter.value !== null) {
+        // const gutterMaerker = iter.from;
+        const line  = editorView.state.doc.lineAt(iter.from).number
+        breakpoints.push(line);
+        iter.next();
+    }
+    return breakpoints;
+}
 
 export function highlightLine(lineNo: number | null) {
     if (typeof lineNo === 'number') {
@@ -100,7 +115,7 @@ function editorAction(node) {
 
 
     editorView = new EditorView({
-        extensions: [basicSetup, readOnlyCompartment.of(readonly), python(), lineHighlightField, theme],
+        extensions: [breakpointGutter, basicSetup, readOnlyCompartment.of(readonly), python(), lineHighlightField, theme],
         parent: node
     });
 
