@@ -1,18 +1,18 @@
 <script lang="ts">
     import { createEventDispatcher } from 'svelte';
     const dispatch = createEventDispatcher();
-    
-    let filename = 'quellcode';
+    import {saveSrcOnStart, srcFilename} from './types/save';
+
+    // let filename = 'quellcode';
 
     function handleButtonSaveClick() {
-        console.log(filename)
-        dispatch('save', {filename: filename});
+        dispatch('save');
     }
 
     function handleFileUpload(evt) {
         let file = evt.target.files[0];
 
-        filename = file.name.split('.')[0];
+        srcFilename.set(file.name.split('.')[0]);
 
         let fileReader = new FileReader();
         fileReader.readAsText(file);
@@ -27,7 +27,9 @@
 
 <div>
     <button on:click={handleButtonSaveClick}>speichern</button>
-    <span>Dateiname: </span> <input bind:value={filename}> <span>.py</span>
+    <span>Dateiname: </span> <input bind:value={$srcFilename}> <span>.py</span>
+    <br>
+    speichern bei jedem Programmstart: <input type=checkbox bind:checked={$saveSrcOnStart}>
     <br>
     laden: 
     <input type="file" id="input" on:input={handleFileUpload}>
