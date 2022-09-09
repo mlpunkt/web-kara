@@ -59,7 +59,7 @@ export function pauseProgram() {
     pauseProgramFlag.set(true);
     if (sleepPromiseResolve) {
         sleepPromiseResolve();
-    }
+    }    
 }
 
 export function step() {
@@ -68,10 +68,19 @@ export function step() {
 
     while (!stepDone) {
         suspension = suspension.resume();
-        if (suspension.child.$filename === "userSrc.py" && lastLineNumber !== suspension.child.$lineno) {
+        if (suspension.$isSuspension) {
+            // Das Programm ist noch nicht abgearbeitet
+            if (suspension.child.$filename === "userSrc.py" && lastLineNumber !== suspension.child.$lineno) {
+                stepDone = true;
+                currentLineNumber.set(suspension.child.$lineno)
+                lastLineNumber = suspension.child.$lineno;
+            }
+        } else {
+            // Das Programm ist abgearbeitet
             stepDone = true;
-            currentLineNumber.set(suspension.child.$lineno)
-            lastLineNumber = suspension.child.$lineno;
+            if (pauseProgramPromiseResolve) {
+                pauseProgramPromiseResolve();
+            }
         }
     }
 }
@@ -270,7 +279,11 @@ export function runProgram(src: string, breakpoints: Array<number>) {
             //     await sleep(0);
             // }
 
-            suspension = suspension.resume();
+            if (suspension.$isSuspension) {
+                suspension = suspension.resume();
+            } else {
+                // das Programm wurde bereits in einem Step beendet
+            }
         }
     }
 
@@ -281,7 +294,7 @@ export function runProgram(src: string, breakpoints: Array<number>) {
                 output_addItem(OutputItemType.GUI_ERROR, 'Das Programm wurde gestoppt in Zeile ' + currentLineNumberSubscription + ' .');
             } else {
                 // Das Programm wurde erfolgreich beendet
-                output_addItem(OutputItemType.SUCCESS, 'Das Programm erfolgreich ausgeführt.')
+                output_addItem(OutputItemType.SUCCESS, 'Das Programm wurde erfolgreich ausgeführt.')
             }
         })
         .catch(error => {
