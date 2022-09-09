@@ -72,7 +72,7 @@ const position_equal = (pos1: Position) => (pos2: Position) => {
 }
 
 const position_notEqual = (pos1: Position) => (pos2: Position) => {
-    return !(pos1.x === pos2.x && pos1.y && pos2.y);
+    return !(pos1.x === pos2.x && pos1.y == pos2.y);
 }
 
 // export function kara_move() {
@@ -450,6 +450,32 @@ export function dialog_closeMessageDialog() {
             }
         }
     });    
+}
+
+export function dialog_openSaveFileAsDialog(okCallback: () => void, filename: string) {
+    dialogState.update((dialogState: DialogState) => {
+        return {
+            ...dialogState,
+            saveFileAs: {
+                isOpen: true,
+                content: '',
+                okCallback: okCallback,
+                filename: filename,
+            }
+        }
+    });
+}
+
+export function dialog_closeSaveFileAsDialog() {
+    dialogState.update((dialogState: DialogState) => {
+        return {
+            ...dialogState,
+            saveFileAs: {
+                ...dialogState.saveFileAs,
+                isOpen: false,                
+            }
+        }
+    });
 }
 
 export function output_reset() {
