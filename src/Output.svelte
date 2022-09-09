@@ -1,5 +1,5 @@
 <script lang="ts">
-import { InterpreterState, interpreterState } from "./interpreter";
+    import { InterpreterState, interpreterState } from "./interpreter";
 
     import { output, OutputItemType } from "./types/output";
 

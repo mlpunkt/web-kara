@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { sleepTimer, stopProgram, interpreterState, InterpreterState, endPause, pauseProgram, step} from './interpreter';
+    import { sleepTimerSlider, stopProgram, interpreterState, InterpreterState, endPause, pauseProgram, step} from './interpreter';
     import { tooltip } from './tooltip';
     import { createEventDispatcher } from 'svelte';
 
@@ -45,11 +45,15 @@
 </script>
 
 <div>
-    <div class="panel">
-        <span>schnell</span><input type="range" min="0.1" max="2" step="0.1" bind:value={$sleepTimer} class="slider"><span>langsam</span>
+    <div class="panel" style="display: flex">
+        <!-- <span>schnell</span><input type="range" min="0.1" max="2" step="0.1" bind:value={$sleepTimer} class="slider"><span>langsam</span> -->
+        <div>
+            Geschwindigkeit: <br>
+            <input type="range" min="0" max="10" step="0.1" bind:value={$sleepTimerSlider} class="slider">
+        </div>
 
         <span style="margin-left: 0.5em"></span>
-        
+
         <!-- disabled={$interpreterState !== InterpreterState.STOPPED} -->
         <button
             title="Programm starten (von Anfang)"

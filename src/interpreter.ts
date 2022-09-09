@@ -1,4 +1,4 @@
-import { writable } from 'svelte/store';
+import { writable, derived } from 'svelte/store';
 import {kara_move, kara_turnLeft, kara_turnRight, output_addItem, world_putLeaf, world_removeLeaf} from './actions';
 import { OutputItemType } from './types/output';
 import { initialWorld, world, worldBeforeLastRun, world_karaOnLeaf, world_mushroomFront, world_treeFront, world_treeLeft, world_treeRight } from './types/world';
@@ -6,7 +6,24 @@ import { initialWorld, world, worldBeforeLastRun, world_karaOnLeaf, world_mushro
 let worldSubscription = initialWorld;
 world.subscribe(newWorld => worldSubscription = newWorld);
 
-export const sleepTimer = writable(1);
+export const sleepTimerSlider = writable(1);
+
+// export const sleepTimer = writable(1);
+const minSleepTimer = 0.1;
+const maxSleepTimer = 2;
+
+const minSleepTimerSlider = 0;
+const maxSleepTimerSlider = 10;
+
+// export const sleepTimer = derived(sleepTimerSlider, $a => 1 / $a );
+export const sleepTimer = derived(sleepTimerSlider, 
+    $a => {
+        const result = (minSleepTimer - maxSleepTimer) / (maxSleepTimerSlider - minSleepTimerSlider) * ($a - minSleepTimerSlider) + maxSleepTimer;
+        console.log(result)
+        return result;
+    }
+);
+
 let sleepTimerSubscription = 1;
 sleepTimer.subscribe(newSleepTimer => sleepTimerSubscription = newSleepTimer);
 

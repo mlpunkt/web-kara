@@ -128,10 +128,13 @@
 
         <span style="margin-left: 0.5em"></span>
 
-        <span>klein</span><input type="range" min="200" max="600" step="10" bind:value={$worldHeight} class="slider"><span>gross</span>
-
-        <span style="margin-left: 0.5em"></span>
+        <div>
+            Zoom: <br>
+            <input type="range" min="200" max="600" step="10" bind:value={$worldHeight} class="slider">    
+        </div>
         
+        <span style="margin-left: 0.5em"></span>
+
         <button
             title="Anzahl der Felder in der Welt ändern"
             use:tooltip

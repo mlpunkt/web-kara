@@ -4,7 +4,7 @@ export let initialSrc =
 # kara.putLeaf()  kara.removeLeaf()
 #
 # SENSOREN:
-# kara.treeFront()  kara.treeRight() kara.treeLeft()
+# kara.treeFront()  kara.treeRight()  kara.treeLeft()
 # kara.onLeaf()  kara.mushroomFront()
 
 kara.move()
