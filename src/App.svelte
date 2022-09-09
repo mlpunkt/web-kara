@@ -69,7 +69,8 @@
 		if (worldComponent) {
 			var link = document.createElement('a');
 			link.download = 'kara-screenshot.svg'
-			link.href = ('data:text/plain;charset=utf-8,') + worldComponent.getSvgString();
+			// link.href = ('data:text/plain;charset=utf-8,') + worldComponent.getSvgString();
+			link.href = ('data:image/svg+xml;charset=utf-8,') + worldComponent.getSvgString();
 			link.click();
 		}
 	}
