@@ -34,95 +34,93 @@
 
 </script>
 
-<div style=" display: flex; flex-direction: column; padding: 0.5em">
-    <p>Welt</p>
-	<!-- <button on:click={handleKaraClick} class:highlightButton={$uiState.editMode === EditMode.KARA}>kara</button> -->
-	
-    <button
-        title="Kara setzen"
-        use:tooltip
-        class="iconButton"
-        class:highlightButton={$uiState.editMode === EditMode.KARA}
-        on:click={handleKaraClick}
-    >
-        <img
-            style="pointer-events: none;"
-            height="30px"
-            src={iconKara} 
-            alt="Icon Kara setzen"
-        />
-    </button>
+<div>
+    <!-- <div style=" display: flex; flex-direction: column; padding: 0.5em"> -->
+    <div class="panel" style="display: flex; flex-direction: column"> 
+        <!-- <p>Welt</p> -->
+        <!-- <button on:click={handleKaraClick} class:highlightButton={$uiState.editMode === EditMode.KARA}>kara</button> -->
+        
+        <button
+            title="Kara setzen"
+            use:tooltip
+            class="iconButton"
+            class:highlightButton={$uiState.editMode === EditMode.KARA}
+            on:click={handleKaraClick}
+        >
+            <img
+                style="pointer-events: none;"
+                height="30px"
+                src={iconKara} 
+                alt="Icon Kara setzen"
+            />
+        </button>
 
-    <button
-        title="Baum setzen / löschen"
-        use:tooltip
-        class="iconButton"
-        class:highlightButton={$uiState.editMode === EditMode.TREE}
-        on:click={handleTreeClick}
-    >
-        <img
-            style="pointer-events: none;"
-            height="30px"
-            src={iconTree} 
-            alt="Icon Baum setzen / löschen"
-        />
-    </button>
+        <button
+            title="Baum setzen / löschen"
+            use:tooltip
+            class="iconButton"
+            class:highlightButton={$uiState.editMode === EditMode.TREE}
+            on:click={handleTreeClick}
+        >
+            <img
+                style="pointer-events: none;"
+                height="30px"
+                src={iconTree} 
+                alt="Icon Baum setzen / löschen"
+            />
+        </button>
 
-    <button
-        title="Pilz setzen / löschen"
-        use:tooltip
-        class="iconButton"
-        class:highlightButton={$uiState.editMode === EditMode.MUSHROOM}
-        on:click={handleMushroomClick}
-    >
-        <img
-            style="pointer-events: none;"
-            height="30px"
-            src={iconMushroom} 
-            alt="Pilz Baum setzen / löschen"
-        />
-    </button>
+        <button
+            title="Pilz setzen / löschen"
+            use:tooltip
+            class="iconButton"
+            class:highlightButton={$uiState.editMode === EditMode.MUSHROOM}
+            on:click={handleMushroomClick}
+        >
+            <img
+                style="pointer-events: none;"
+                height="30px"
+                src={iconMushroom} 
+                alt="Pilz Baum setzen / löschen"
+            />
+        </button>
 
-    <button
-        title="Blatt setzen / löschen"
-        use:tooltip
-        class="iconButton"
-        class:highlightButton={$uiState.editMode === EditMode.LEAF}
-        on:click={handleLeafClick}
-    >
-        <img
-            style="pointer-events: none;"
-            height="30px"
-            src={iconLeaf} 
-            alt="Blatt Baum setzen / löschen"
-        />
-    </button>
+        <button
+            title="Blatt setzen / löschen"
+            use:tooltip
+            class="iconButton"
+            class:highlightButton={$uiState.editMode === EditMode.LEAF}
+            on:click={handleLeafClick}
+        >
+            <img
+                style="pointer-events: none;"
+                height="30px"
+                src={iconLeaf} 
+                alt="Blatt Baum setzen / löschen"
+            />
+        </button>
 
-    <button
-        title="Löschen"
-        use:tooltip
-        class="iconButton"
-        class:highlightButton={$uiState.editMode === EditMode.DELETE}
-        on:click={handleDeleteClick}
-    >
-        <img
-            style="pointer-events: none;"
-            height="30px"
-            src={iconDelete} 
-            alt="Icon löschen"
-        />
-    </button>
+        <button
+            title="Löschen"
+            use:tooltip
+            class="iconButton"
+            class:highlightButton={$uiState.editMode === EditMode.DELETE}
+            on:click={handleDeleteClick}
+        >
+            <img
+                style="pointer-events: none;"
+                height="30px"
+                src={iconDelete} 
+                alt="Icon löschen"
+            />
+        </button>
+    </div>
 </div>
 
 <style>
 	.highlightButton {
 		background-color: aqua;
 	}
-
-    .iconButton {
-        margin: 0;
-        padding: 3px;
-    }
 
     img {
         margin: 0;

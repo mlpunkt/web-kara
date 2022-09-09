@@ -44,70 +44,74 @@
     }
 </script>
 
-<div style="padding: 0.5em;">
-    <span>schnell</span><input type="range" min="0.1" max="2" step="0.1" bind:value={$sleepTimer} class="slider"><span>langsam</span>
+<div>
+    <div class="panel">
+        <span>schnell</span><input type="range" min="0.1" max="2" step="0.1" bind:value={$sleepTimer} class="slider"><span>langsam</span>
 
-    <!-- disabled={$interpreterState !== InterpreterState.STOPPED} -->
-    <button
-        title="Programm starten (von Anfang)"
-        use:tooltip
-        class="iconRun"
-        on:click={handleButtonRunClick}
-        >
-        <img
-            style="pointer-events: none;"
-            class:highlightButtonRed={$interpreterState === InterpreterState.RUNNING}
-            height="30px"
-            src={iconRun} 
-            alt="Icon Programm starten"
-        />
-    </button>
+        <span style="margin-left: 0.5em"></span>
+        
+        <!-- disabled={$interpreterState !== InterpreterState.STOPPED} -->
+        <button
+            title="Programm starten (von Anfang)"
+            use:tooltip
+            class="iconButton"
+            on:click={handleButtonRunClick}
+            >
+            <img
+                style="pointer-events: none;"
+                class:highlightButtonRed={$interpreterState === InterpreterState.RUNNING}
+                height="30px"
+                src={iconRun} 
+                alt="Icon Programm starten"
+            />
+        </button>
 
-    <button
-        title="Programm stoppen"
-        use:tooltip
-        class="iconButton"
-        on:click={handleButtonStopClick}
-        >
-        <img
-            style="pointer-events: none;"
-            height="30px"
-            src={iconStop} 
-            alt="Icon Programm stoppen"
-        />
-    </button>
+        <button
+            title="Programm stoppen"
+            use:tooltip
+            class="iconButton"
+            on:click={handleButtonStopClick}
+            >
+            <img
+                style="pointer-events: none;"
+                height="30px"
+                src={iconStop} 
+                alt="Icon Programm stoppen"
+            />
+        </button>
 
-    <span style="margin-left: 1em"></span>
+        <span style="margin-left: 0.5em"></span>
 
-    <button
-        title="Programm pausieren"
-        use:tooltip
-        class="iconButton"
-        on:click={handleButtonPauseClick}
-        class:highlightButtonGreen={$interpreterState === InterpreterState.PAUSED}
-        >
-        <img
-            style="pointer-events: none;"
-            height="30px"
-            src={iconPause}
-            alt="Icon Programm pausieren"
-        />
-    </button>
+        <button
+            title="Programm pausieren"
+            use:tooltip
+            class="iconButton"
+            on:click={handleButtonPauseClick}
+            class:highlightButtonGreen={$interpreterState === InterpreterState.PAUSED}
+            >
+            <img
+                style="pointer-events: none;"
+                height="30px"
+                src={iconPause}
+                alt="Icon Programm pausieren"
+            />
+        </button>
 
-    <button
-        title="Einzelschritt"
-        use:tooltip
-        class="iconButton"
-        on:click={handleButtonStepClick}
-        class:highlightButtonGreen={$interpreterState === InterpreterState.PAUSED}
-        >
-        <img
-            style="pointer-events: none;"
-            height="30px"
-            src={iconStep}
-            alt="Icon Einzelschritt"
-        />
-    </button>
+        <button
+            title="Einzelschritt"
+            use:tooltip
+            class="iconButton"
+            on:click={handleButtonStepClick}
+            class:highlightButtonGreen={$interpreterState === InterpreterState.PAUSED}
+            >
+            <img
+                style="pointer-events: none;"
+                height="30px"
+                src={iconStep}
+                alt="Icon Einzelschritt"
+            />
+        </button>
+    </div>
 </div>
 
 <style>

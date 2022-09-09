@@ -313,7 +313,7 @@ export function world_toggleMushroom(pos: Position) {
 export function world_putLeaf(pos: Position) {
     if (world_fieldHasLeaf(worldSubscription, pos)) {
         return {
-            message: 'Auf dem Feld befindet sich bereits ein Blat. Deshalb kann Kara kein Blatt legen.',
+            message: 'Auf dem Feld befindet sich bereits ein Blatt. Deshalb kann Kara kein Blatt legen.',
         }
     } else {
         world.update((world: World) => {

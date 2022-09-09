@@ -37,93 +37,78 @@
     }
 </script>
 
-<div style=" display: flex; flex-direction: column; padding: 0.5em">
-    <p>Kara</p>
+<div>
+    <div class="panel" style="display: flex; flex-direction: column;">
+        <!-- <p>Kara</p> -->
 
-    <button
-        title="Schritt vor"
-        use:tooltip
-        class="iconButton"
-        on:click={handleKaraMoveClick}
-    >
-        <img
-            style="pointer-events: none;"
-            height="30px"
-            src={iconMove} 
-            alt="Icon Schritt vor"
-        />
-    </button>
-    
-    <button
-        title="nach links drehen"
-        use:tooltip
-        class="iconButton"
-        on:click={kara_turnLeft}
-    >
-        <img
-            style="pointer-events: none;"
-            height="30px"
-            src={iconTurnLeft} 
-            alt="Icon nach links drehen"
-        />
-    </button>
-    
-    <button
-        title="nach rechts drehen"
-        use:tooltip
-        class="iconButton"
-        on:click={kara_turnRight}
-    >
-        <img
-            style="pointer-events: none;"
-            height="30px"
-            src={iconTurnRight} 
-            alt="Icon nach rechts drehen"
-        />
-    </button>
-    
-    <button
-        title="Blatt legen"
-        use:tooltip
-        class="iconButton"
-        on:click={handlePutLeafClick}
-    >
-        <img
-            style="pointer-events: none;"
-            height="30px"
-            src={iconPutLeaf} 
-            alt="Icon Blatt legen"
-        />
-    </button>
-    
-    <button
-        title="Blatt entfernen"
-        use:tooltip
-        class="iconButton"
-        on:click={handleRemoveLeafClick}
-    >
-        <img
-            style="pointer-events: none;"
-            height="30px"
-            src={iconRemoveLeaf} 
-            alt="Icon Blatt aufnehmen"
-        />
-    </button>
-
-    <div style="height: 2em"></div>
-
-    <button
-        title="Grösse der Welt ändern"
-        use:tooltip
-        class="iconButton"
-        on:click={handleChangeSizeClick}
-    >
-        <img
-            style="pointer-events: none;"
-            height="30px"
-            src={iconSetSize} 
-            alt="Icon Grösse der Welt ändernr"
-        />
-    </button>
-
+        <button
+            title="Schritt vor"
+            use:tooltip
+            class="iconButton"
+            on:click={handleKaraMoveClick}
+        >
+            <img
+                style="pointer-events: none;"
+                height="30px"
+                src={iconMove} 
+                alt="Icon Schritt vor"
+            />
+        </button>
+        
+        <button
+            title="nach links drehen"
+            use:tooltip
+            class="iconButton"
+            on:click={kara_turnLeft}
+        >
+            <img
+                style="pointer-events: none;"
+                height="30px"
+                src={iconTurnLeft} 
+                alt="Icon nach links drehen"
+            />
+        </button>
+        
+        <button
+            title="nach rechts drehen"
+            use:tooltip
+            class="iconButton"
+            on:click={kara_turnRight}
+        >
+            <img
+                style="pointer-events: none;"
+                height="30px"
+                src={iconTurnRight} 
+                alt="Icon nach rechts drehen"
+            />
+        </button>
+        
+        <button
+            title="Blatt legen"
+            use:tooltip
+            class="iconButton"
+            on:click={handlePutLeafClick}
+        >
+            <img
+                style="pointer-events: none;"
+                height="30px"
+                src={iconPutLeaf} 
+                alt="Icon Blatt legen"
+            />
+        </button>
+        
+        <button
+            title="Blatt entfernen"
+            use:tooltip
+            class="iconButton"
+            on:click={handleRemoveLeafClick}
+        >
+            <img
+                style="pointer-events: none;"
+                height="30px"
+                src={iconRemoveLeaf} 
+                alt="Icon Blatt aufnehmen"
+            />
+        </button>
+    </div>
 </div>

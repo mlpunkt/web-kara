@@ -6,7 +6,7 @@
     import iconSaveAs from '../assets/saveAs.svg';
     import iconLoad from   '../assets/load.svg';
     import { tooltip } from './tooltip';
-import { dialog_openLoadFileDialog, dialog_openSaveFileAsDialog } from './actions';
+    import { dialog_openLoadFileDialog, dialog_openSaveFileAsDialog } from './actions';
 
     function handleButtonSaveClick() {
         dispatch('save');
@@ -52,8 +52,7 @@ import { dialog_openLoadFileDialog, dialog_openSaveFileAsDialog } from './action
     }
 </script>
 
-<div>
-    
+<div class="panel">    
     <button
         class="iconButton"
         title="Programm speichern"
