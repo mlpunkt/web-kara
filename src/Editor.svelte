@@ -1,10 +1,12 @@
 <script lang="ts">
-import {EditorView, basicSetup, minimalSetup} from "codemirror"
+import {EditorView} from "codemirror"
+import {basicSetup} from './codemirrorSetup';
 import {EditorState, Compartment} from "@codemirror/state";
 import {python} from "@codemirror/lang-python"
 import {lineHighlightField, addLineHighlight} from './lineMarkExtension';
 import {currentLineNumber, InterpreterState, interpreterState} from './interpreter';
 import { breakpointGutter, breakpointState } from "./BreakpointGutter";
+import { indentUnit } from "@codemirror/language";
 
 export function getText() {
     if (editorView) {
@@ -114,8 +116,9 @@ function editorAction(node) {
     });
 
 
+    // https://discuss.codemirror.net/t/codemirror-6-set-indentation-unit/2972/3
     editorView = new EditorView({
-        extensions: [breakpointGutter, basicSetup, readOnlyCompartment.of(readonly), python(), lineHighlightField, theme],
+        extensions: [breakpointGutter, basicSetup, readOnlyCompartment.of(readonly), python(), lineHighlightField, theme, indentUnit.of("    ")],
         parent: node
     });
 
