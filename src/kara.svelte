@@ -1,5 +1,5 @@
 <!-- <polyline points="5,5 45,25 5,45" pointer-events="none"/> -->
-<g pointer-events="none">
+<g pointer-events="none" transform="scale(0.7)" transform-origin="25 25">
 
 <ellipse
        style="fill:#ff0000;stroke:#000000;stroke-width:1.96342;stroke-linecap:round;stroke-linejoin:round;stop-color:#000000"

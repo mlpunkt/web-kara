@@ -1,6 +1,6 @@
 <!-- <polyline points="25,5 45,25 25,45 5,25" pointer-events="none"/> -->
 
-<g pointer-events="none">
+<g pointer-events="none" transform="scale(0.7)" transform-origin="25 25">
     <path
        style="display:inline;fill:#ffffff;fill-opacity:1;stroke:#8b8b8b;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1;stop-color:#000000"
        d="m 21.719515,27.580337 c -2.69152,1.65987 -5.681547,7.411817 -5.171313,11.376888 0.510234,3.965072 3.211737,7.240154 6.808896,7.584593 3.597159,0.344439 8.587093,-2.546016 9.394552,-5.602256 0.807459,-3.05624 -3.275914,-4.693538 -3.964674,-6.981273 -0.68876,-2.287735 1.115112,-5.013427 -0.430942,-6.291764 -1.546054,-1.278337 -3.944999,-1.746058 -6.636519,-0.08619 z"
