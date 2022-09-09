@@ -19,7 +19,7 @@
 
 	import {saveSrcOnStart, saveWorldOnStart, srcFilename, worldFilename} from './stores';
 	import SaveFileAsDialog from "./dialog/SaveFileAsDialog.svelte";
-import LoadFileDialog from "./dialog/LoadFileDialog.svelte";
+	import LoadFileDialog from "./dialog/LoadFileDialog.svelte";
 
 	let editor: Editor;
 
@@ -64,15 +64,34 @@ import LoadFileDialog from "./dialog/LoadFileDialog.svelte";
 		const breakpoints = editor.getBreakpoints();
 		runProgram(src, breakpoints);
 	}
+
+	// function handleTestClicked() {
+	// 	if (worldComponent) {
+	// 		console.log(worldComponent.getSvgString());
+	// 	}
+	// }
+
+	let worldComponent;
+	function handleScreenshot() {
+		if (worldComponent) {
+			// console.log(worldComponent.getSvgString());
+			var link = document.createElement('a');
+			link.download = 'kara-screenshot.svg'
+			link.href = ('data:text/plain;charset=utf-8,') + worldComponent.getSvgString();
+			link.click();
+		}
+	}
 </script>
 
 <main>
 	<div style="display: flex; height: 100vh">
 		<div style="display: flex; flex-direction: column; margin-right: 3em;">
-			<MenuTop on:save={handleWorldSave}/>
+			<MenuTop 
+				on:save={handleWorldSave}
+				on:screenshot={handleScreenshot} />
 			<div style="display: flex;">
 				<MenuLeft />
-				<World />
+				<World bind:this={worldComponent}/>
 				<MenuRight />
 			</div>
 			<MenuBottom on:run={handleRun}/>

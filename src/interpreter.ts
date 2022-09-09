@@ -18,8 +18,10 @@ const maxSleepTimerSlider = 10;
 // export const sleepTimer = derived(sleepTimerSlider, $a => 1 / $a );
 export const sleepTimer = derived(sleepTimerSlider, 
     $a => {
+        // https://de.wikipedia.org/wiki/Zweipunkteform
+        // x-Achse: wert des Sliders; y-Achse: Wert des sleepTimers
         const result = (minSleepTimer - maxSleepTimer) / (maxSleepTimerSlider - minSleepTimerSlider) * ($a - minSleepTimerSlider) + maxSleepTimer;
-        console.log(result)
+        // console.log(result)
         return result;
     }
 );

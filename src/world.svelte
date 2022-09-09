@@ -41,10 +41,18 @@
             handleMouseAction(x, y);
         }
     }
+
+    export function getSvgString() {
+        if (svgCanvas) {
+            return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="'+ viewBox + '">' + svgCanvas.innerHTML + '</svg>';
+        }
+    }
+
+    let svgCanvas;
 </script>
 
 <!-- <svg style="height: 300px;" viewBox={viewBox}> -->
-<svg viewBox={viewBox} style="height: {$worldHeight}px">
+<svg 	bind:this={svgCanvas} viewBox={viewBox} style="height: {$worldHeight}px">
     <!-- Klickflächen  -->
 
     {#each range(0, $world.sizeX - 1) as x}

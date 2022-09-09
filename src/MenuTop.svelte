@@ -11,6 +11,7 @@
     import iconSaveAs from '../assets/saveAs.svg';
     import iconLoad from   '../assets/load.svg';
     import iconSetSize from '../assets/iconSetSize_nromal.svg';
+    import iconExportSVG from '../assets/iconExportSVG.svg';
 
 
     function handleChangeSizeClick() {
@@ -63,6 +64,10 @@
                 world_set(newWorld);
             }
         );
+    }
+
+    function handleScreenshotClick() {
+        dispatch('screenshot');
     }
 </script>
 
@@ -148,6 +153,20 @@
                 alt="icon Anzahl der Felder in der Welt ändern"
             />
         </button>
+
+        <button
+            title="Screenshot der Welt speichern"
+            use:tooltip
+            class="iconButton"
+            on:click={handleScreenshotClick}
+        >
+            <img
+                style="pointer-events: none;"
+                height="30px"
+                src={iconExportSVG}
+                alt="icon Screenshot"
+            />
+        </button>        
         <!-- <div style="margin-left: 1em">
             <button on:click={handleButtonSaveClick}>speichern</button>
             <span>Dateiname: </span> <input bind:value={$worldFilename}> <span>.world</span>
