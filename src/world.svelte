@@ -9,6 +9,7 @@
     import {direction_rotationDegrees, world} from './types/world';
     import {uiState, EditMode } from './types/uiState';
     import { kara_setPosition, world_deleteEverythingFromField, world_toggleLeaf, world_toggleMushroom, world_toggleTree } from './actions';
+    import { worldHeight } from './types/world';
 
     const fieldSize = 50;
 
@@ -43,7 +44,7 @@
 </script>
 
 <!-- <svg style="height: 300px;" viewBox={viewBox}> -->
-<svg viewBox={viewBox}>
+<svg viewBox={viewBox} style="height: {$worldHeight}px">
     <!-- Klickflächen  -->
 
     {#each range(0, $world.sizeX - 1) as x}

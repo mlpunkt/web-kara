@@ -8,6 +8,16 @@ export interface DialogState {
     },
     changeSize: {
         isOpen: boolean,
+    },
+    saveFileAs: {
+        isOpen: boolean,
+        okCallback: (filename: string) => void,
+        filename: string,
+        filenameExtension: string,
+    },
+    loadFileDialog: {
+        isOpen: boolean,
+        okCallback: (filename: string, contentString: string) => void,
     }
 }
 
@@ -17,8 +27,18 @@ const initialDialogState = {
         title: '',
         message: '',
     },
+    saveFileAs: {
+        isOpen: false,
+        okCallback: () => null,
+        filename: '',
+        filenameExtension: '',
+    },
     changeSize: {
         isOpen: false,
+    },
+    loadFileDialog: {
+        isOpen: false,
+        okCallback: () => null,
     }
 } as DialogState
 

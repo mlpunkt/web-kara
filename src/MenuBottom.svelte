@@ -12,7 +12,6 @@
     import iconStep from '../assets/iconStep_normal.svg';
     import { output_addItem, output_reset } from './actions';
     import { OutputItemType } from './types/output';
-
  
     function handleButtonRunClick() {
 		// runProgram($srcInEditor);
@@ -109,8 +108,6 @@
             alt="Icon Einzelschritt"
         />
     </button>
-
- 
 </div>
 
 <style>

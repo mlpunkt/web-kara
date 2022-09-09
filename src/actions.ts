@@ -452,7 +452,7 @@ export function dialog_closeMessageDialog() {
     });    
 }
 
-export function dialog_openSaveFileAsDialog(okCallback: () => void, filename: string) {
+export function dialog_openSaveFileAsDialog(okCallback: (filename: string) => void, filename: string, filenameExtension) {
     dialogState.update((dialogState: DialogState) => {
         return {
             ...dialogState,
@@ -461,6 +461,7 @@ export function dialog_openSaveFileAsDialog(okCallback: () => void, filename: st
                 content: '',
                 okCallback: okCallback,
                 filename: filename,
+                filenameExtension: filenameExtension,
             }
         }
     });
@@ -472,6 +473,31 @@ export function dialog_closeSaveFileAsDialog() {
             ...dialogState,
             saveFileAs: {
                 ...dialogState.saveFileAs,
+                isOpen: false,                
+            }
+        }
+    });
+}
+
+export function dialog_openLoadFileDialog(okCallback: (filename: string, contentString: string) => void) {
+    dialogState.update((dialogState: DialogState) => {
+        return {
+            ...dialogState,
+            loadFileDialog: {
+                ...dialogState.loadFileDialog,
+                okCallback: okCallback,
+                isOpen: true,                
+            }
+        }
+    });
+}
+
+export function dialog_closeLoadFileDialog() {
+    dialogState.update((dialogState: DialogState) => {
+        return {
+            ...dialogState,
+            loadFileDialog: {
+                ...dialogState.loadFileDialog,
                 isOpen: false,                
             }
         }

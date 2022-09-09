@@ -1,5 +1,5 @@
 <script lang="ts">
-import {EditorView, basicSetup} from "codemirror"
+import {EditorView, basicSetup, minimalSetup} from "codemirror"
 import {EditorState, Compartment} from "@codemirror/state";
 import {python} from "@codemirror/lang-python"
 import {lineHighlightField, addLineHighlight} from './lineMarkExtension';

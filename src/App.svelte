@@ -17,7 +17,9 @@
 	import MenuEditor from "./MenuEditor.svelte";
 	import {world} from './types/world';
 
-	import {saveSrcOnStart, saveWorldOnStart, srcFilename, worldFilename} from './types/save';
+	import {saveSrcOnStart, saveWorldOnStart, srcFilename, worldFilename} from './stores';
+	import SaveFileAsDialog from "./dialog/SaveFileAsDialog.svelte";
+import LoadFileDialog from "./dialog/LoadFileDialog.svelte";
 
 	let editor: Editor;
 
@@ -86,4 +88,6 @@
 
 	<MessageDialog />
 	<ChangeSizeDialog />
+	<SaveFileAsDialog />
+	<LoadFileDialog />
 </main>
