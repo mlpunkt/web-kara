@@ -19,23 +19,30 @@
 	</p>
     
     <p>Ausgabe:</p>
-    <div>
-        {#each $output as item}
-            {#if item.type === OutputItemType.PYTHON_PRINT}
-                <p>{item.message}</p>
-            {/if}
-
-            {#if item.type === OutputItemType.PYTHON_ERROR}
-                <p style="color: red">{item.message}</p>
-            {/if}
-
-            {#if item.type === OutputItemType.GUI_ERROR}
-                <p style="color: orange">{item.message}</p>
-            {/if}
-
-            {#if item.type === OutputItemType.SUCCESS}
-                <p style="color: green">{item.message}</p>
-            {/if}
-        {/each}
-    </div> 
 </div>
+<div style="overflow-y: scroll; flex-grow: 1; flex-basis: 100px; flex-shrink: 0">
+    {#each $output as item}
+        {#if item.type === OutputItemType.PYTHON_PRINT}
+            <p class="outputItem">{item.message}</p>
+        {/if}
+
+        {#if item.type === OutputItemType.PYTHON_ERROR}
+            <p class="outputItem" style="color: red">{item.message}</p>
+        {/if}
+
+        {#if item.type === OutputItemType.GUI_ERROR}
+            <p class="outputItem" style="color: orange">{item.message}</p>
+        {/if}
+
+        {#if item.type === OutputItemType.SUCCESS}
+            <p class="outputItem" style="color: green">{item.message}</p>
+        {/if}
+    {/each}
+</div>
+
+<style>
+    .outputItem {
+        margin: 0px;
+        padding: 0px;
+    }
+</style>
