@@ -46,7 +46,6 @@
 
 <div>
     <div class="panel" style="display: flex">
-        <!-- <span>schnell</span><input type="range" min="0.1" max="2" step="0.1" bind:value={$sleepTimer} class="slider"><span>langsam</span> -->
         <div>
             Geschwindigkeit: <br>
             <input type="range" min="0" max="10" step="0.1" bind:value={$sleepTimerSlider} class="slider">

@@ -1,5 +1,4 @@
 <script lang="ts">
-
 	import World from "./world.svelte";
 	import MenuLeft from "./MenuLeft.svelte";
 	import MenuRight from "./MenuRight.svelte";
@@ -65,16 +64,9 @@
 		runProgram(src, breakpoints);
 	}
 
-	// function handleTestClicked() {
-	// 	if (worldComponent) {
-	// 		console.log(worldComponent.getSvgString());
-	// 	}
-	// }
-
 	let worldComponent;
 	function handleScreenshot() {
 		if (worldComponent) {
-			// console.log(worldComponent.getSvgString());
 			var link = document.createElement('a');
 			link.download = 'kara-screenshot.svg'
 			link.href = ('data:text/plain;charset=utf-8,') + worldComponent.getSvgString();
