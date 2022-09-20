@@ -52,7 +52,7 @@
 </script>
 
 <!-- <svg style="height: 300px;" viewBox={viewBox}> -->
-<svg 	bind:this={svgCanvas} viewBox={viewBox} style="height: {$worldHeight}px">
+<svg 	bind:this={svgCanvas} viewBox={viewBox} style="height: {$worldHeight * $world.sizeY}px">
     <!-- Klickflächen  -->
 
     {#each range(0, $world.sizeX - 1) as x}

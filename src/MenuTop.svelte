@@ -135,7 +135,7 @@
 
         <div>
             Zoom: <br>
-            <input type="range" min="200" max="600" step="10" bind:value={$worldHeight} class="slider">    
+            <input type="range" min="20" max="100" step="10" bind:value={$worldHeight} class="slider">    
         </div>
         
         <span style="margin-left: 0.5em"></span>

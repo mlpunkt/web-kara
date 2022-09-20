@@ -223,4 +223,4 @@ export const world = writable(initialWorld);
 
 export const worldBeforeLastRun = writable(initialWorld);
 
-export const worldHeight = writable(300);
+export const worldHeight = writable(50);
