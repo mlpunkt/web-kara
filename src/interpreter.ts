@@ -132,23 +132,23 @@ Sk.builtins.__removeLeaf__ = new Sk.builtin.func(function () {
 });
 
 Sk.builtins.__treeFront__ = new Sk.builtin.func(function () {
-    return world_treeFront(worldSubscription);
+    return Sk.ffi.remapToPy(world_treeFront(worldSubscription));
 });
 
 Sk.builtins.__treeLeft__ = new Sk.builtin.func(function () {
-    return world_treeLeft(worldSubscription);
+    return Sk.ffi.remapToPy(world_treeLeft(worldSubscription));
 });
 
 Sk.builtins.__treeRight__ = new Sk.builtin.func(function () {
-    return world_treeRight(worldSubscription);
+    return Sk.ffi.remapToPy(world_treeRight(worldSubscription));
 });
 
 Sk.builtins.__onLeaf__ = new Sk.builtin.func(function () {
-    return world_karaOnLeaf(worldSubscription);
+    return Sk.ffi.remapToPy(world_karaOnLeaf(worldSubscription));
 });
 
 Sk.builtins.__mushroomFront__ = new Sk.builtin.func(function () {
-    return world_mushroomFront(worldSubscription);
+    return Sk.ffi.remapToPy(world_mushroomFront(worldSubscription));
 });
 
 
@@ -227,7 +227,8 @@ export function runProgram(src: string, breakpoints: Array<number>) {
         Sk.configure({
             output: outf,
             debugging: true,
-            retainGlobals: true,
+            // bei dem nächsten Programmstart werden die Globals zurückgesetzt
+            retainGlobals: false,
         });
 
         interpreterState.set(InterpreterState.RUNNING);
@@ -239,6 +240,13 @@ export function runProgram(src: string, breakpoints: Array<number>) {
             }
             suspension = suspension.resume();
         }
+
+        Sk.configure({
+            output: outf,
+            debugging: true,
+            // bei dem nächsten Programmstart werden die Globals beibehalten (insbesonder das Objekt kara)
+            retainGlobals: true,
+        });
 
         suspension = Sk.importMainWithBody("userSrc", false, src, true);
         lastLineNumber = -1;
