@@ -1,15 +1,36 @@
+// export let initialSrc = 
+// `# BEFEHLE:
+// # kara.move()  kara.turnRight()  kara.turnLeft()
+// # kara.putLeaf()  kara.removeLeaf()
+// #
+// # SENSOREN:
+// # kara.treeFront()  kara.treeRight()  kara.treeLeft()
+// # kara.onLeaf()  kara.mushroomFront()
+
+import { kara_move } from "./actions"
+
 export let initialSrc = 
 `# BEFEHLE:
 # kara.move()  kara.turnRight()  kara.turnLeft()
 # kara.putLeaf()  kara.removeLeaf()
 #
 # SENSOREN:
-# kara.treeFront()  kara.treeRight()  kara.treeLeft()
+# kara.treeFront()  kara.treeRight() kara.treeLeft()
 # kara.onLeaf()  kara.mushroomFront()
 
 kara.move()
 kara.putLeaf()`
 
+// export let initialSrc =
+// `
+// def test():
+//     kara.putLeaf()
+//     kara.move()
+//     kara.putLeaf()
+//     kara.turnRight()
+
+// test()
+// `
 
 // export let initialSrc = 
 // `# BEFEHLE:
@@ -18,7 +39,7 @@ kara.putLeaf()`
 // #
 // # SENSOREN:
 // # kara.treeFront()  kara.treeRight() kara.treeLeft()
-// # kara.onLeaf  kara.mushroomFront()
+// # kara.onLeaf()  kara.mushroomFront()
 
 // while True:
 //     while not kara.treeFront():
@@ -61,13 +82,13 @@ kara.putLeaf()`
 //     kara.move()`
 
 
-let src=`
-while True:
-    if kara.onLeaf():
-        kara.removeLeaf()
-    else:
-        kara.putLeaf()
-    kara.move()`
+// let src=`
+// while True:
+//     if kara.onLeaf():
+//         kara.removeLeaf()
+//     else:
+//         kara.putLeaf()
+//     kara.move()`
 
 // 	let src=`import time
 // move()

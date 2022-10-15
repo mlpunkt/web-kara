@@ -14,6 +14,33 @@ const maxSleepTimer = 2;
 const minSleepTimerSlider = 0;
 const maxSleepTimerSlider = 10;
 
+// function suspension_lineNoRek(suspension: any) {
+//     if (suspension.child.child.$isSuspension) {
+//         return suspension_lineNoRek(suspension.child)
+//     } else {
+//         return suspension.child.$lineno;
+//     }
+// }
+
+// function suspension_filenameRek(suspension: any) {
+//     if (suspension.child.child.$isSuspension) {
+//         return suspension_filenameRek(suspension.child)
+//     } else {
+//         return suspension.child.$filename;
+//     }
+// }
+
+function suspension_lineAndFilename_Rek(suspension: any) {
+    if (suspension.child.child && suspension.child.child.$filename && suspension.child.child.$lineno) {
+        return suspension_lineAndFilename_Rek(suspension.child)
+    } else {
+        return {
+            lineno: suspension.child.$lineno,
+            filename: suspension.child.$filename
+        }
+    }
+}
+
 export const sleepTimer = derived(sleepTimerSlider, 
     $a => {
         // https://de.wikipedia.org/wiki/Zweipunkteform
@@ -70,10 +97,16 @@ export function step() {
         suspension = suspension.resume();
         if (suspension.$isSuspension) {
             // Das Programm ist noch nicht abgearbeitet
-            if (suspension.child.$filename === "userSrc.py" && lastLineNumber !== suspension.child.$lineno) {
+            // const lineNo = suspension_lineNoRek(suspension);
+            // if (suspension.child.$filename === "userSrc.py" && lastLineNumber !== suspension.child.$lineno) {
+            // const filename = suspension_filenameRek(suspension);
+            const {filename, lineno} = suspension_lineAndFilename_Rek(suspension)
+            if (filename === "userSrc.py" && lastLineNumber !== lineno) {
                 stepDone = true;
-                currentLineNumber.set(suspension.child.$lineno)
-                lastLineNumber = suspension.child.$lineno;
+                currentLineNumber.set(lineno)
+                lastLineNumber = lineno;
+                // currentLineNumber.set(suspension.child.$lineno)
+                // lastLineNumber = suspension.child.$lineno;
             }
         } else {
             // Das Programm ist abgearbeitet
@@ -251,16 +284,18 @@ export function runProgram(src: string, breakpoints: Array<number>) {
         suspension = Sk.importMainWithBody("userSrc", false, src, true);
         lastLineNumber = -1;
         while (suspension.$isSuspension && !stopProgramFlagSubscription) {
-            if (suspension.child.$filename === "userSrc.py") {
-                if (suspension.child.$lineno !== lastLineNumber) {
-                    lastLineNumber = suspension.child.$lineno;
-                    currentLineNumber.set(suspension.child.$lineno)
+            const {filename, lineno} = suspension_lineAndFilename_Rek(suspension)
+            if (filename === "userSrc.py") {
+                // const lineNo = suspension_lineNoRek(suspension);
+                if (lineno !== lastLineNumber) {
+                    lastLineNumber = lineno;
+                    currentLineNumber.set(lineno)
 
                     // if (interpreterStateSubscription === InterpreterState.RUNNING) {
                     //     await sleep(sleepTimerSubscription * 1000);
                     // }
 
-                    if (breakpoints.includes(suspension.child.$lineno)) {
+                    if (breakpoints.includes(lineno)) {
                         pauseProgramFlag.set(true);
                     }
 
