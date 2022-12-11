@@ -11,7 +11,7 @@
 
 	import Editor from './Editor.svelte';
 	import { runProgram, interpreterState, InterpreterState } from "./interpreter";
-	import { initialSrc } from "./initialSrc";
+	import { initialSrcDefault } from "./initialSrc";
 	import MenuTop from "./MenuTop.svelte";
 	import MenuEditor from "./MenuEditor.svelte";
 	import {world} from './types/world';
@@ -19,8 +19,22 @@
 	import {saveSrcOnStart, saveWorldOnStart, srcFilename, worldFilename} from './stores';
 	import SaveFileAsDialog from "./dialog/SaveFileAsDialog.svelte";
 	import LoadFileDialog from "./dialog/LoadFileDialog.svelte";
+    import type { Exercise } from "./Exercise";
+
 
 	let editor: Editor;
+
+	export let exercise: Exercise;
+	if (exercise) {
+		world.set(exercise.worlds[0]);
+	}
+
+	// const initialSrc = typeof exercise.initialSrc === 'string'
+	// 					? exercise.initialSrc
+	// 					: initialSrcDefault;
+
+	const initialSrc = exercise?.initialSrc ?? initialSrcDefault;
+
 
 	function saveSrc(src: string) {
 		const link = document.createElement('a');
@@ -95,6 +109,7 @@
 		<!-- <div> -->
 			<MenuEditor on:save={handleEditorSave} on:load={handleEditorLoad}/>
 			<Editor bind:this={editor} initialText={initialSrc} />
+			<!-- <VariableInspector /> -->
 		</div>
 	</div>
 

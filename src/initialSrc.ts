@@ -7,9 +7,7 @@
 // # kara.treeFront()  kara.treeRight()  kara.treeLeft()
 // # kara.onLeaf()  kara.mushroomFront()
 
-import { kara_move } from "./actions"
-
-export let initialSrc = 
+export let initialSrcDefault = 
 `# BEFEHLE:
 # kara.move()  kara.turnRight()  kara.turnLeft()
 # kara.putLeaf()  kara.removeLeaf()
