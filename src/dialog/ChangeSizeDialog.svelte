@@ -34,8 +34,8 @@
 <Dialog isOpen={$dialogState.changeSize.isOpen} on:close={close}>
     <p>Neue Größe für die Welt eingeben:<p>
 
-    <p>Größe nach rechts: <input type=number bind:value={sizeX} step=1 min=1 max=10> </p>
-    <p>Größe nach unten:  <input type=number bind:value={sizeY} step=1 min=1 max=10> </p>
+    <p>Größe nach rechts: <input type=number bind:value={sizeX} step=1 min=1 max=20> </p>
+    <p>Größe nach unten:  <input type=number bind:value={sizeY} step=1 min=1 max=20> </p>
     
     <button on:click={close}>Abbrechen</button>
     <button on:click={handleOkClick}>OK</button>
