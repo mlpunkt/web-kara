@@ -52,7 +52,7 @@
     }
 </script>
 
-<div class="panel">    
+<div class="panel">
     <button
         class="iconButton"
         title="Programm speichern"

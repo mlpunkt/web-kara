@@ -146,7 +146,7 @@ function editorAction(node) {
         align-items: stretch; */
         width: 100%;
         /* height: 90%; */
-        height: calc(100% - 30px);
+        height: calc(70% - 58px);
         /* flex-basis: 80%;
         flex-grow: 1; */
     }

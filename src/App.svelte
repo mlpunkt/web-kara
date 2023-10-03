@@ -20,6 +20,7 @@
 	import SaveFileAsDialog from "./dialog/SaveFileAsDialog.svelte";
 	import LoadFileDialog from "./dialog/LoadFileDialog.svelte";
     import type { Exercise } from "./Exercise";
+    import VariableInspector from "./VariableInspector.svelte";
 
 
 	let editor: Editor;
@@ -109,7 +110,7 @@
 		<!-- <div> -->
 			<MenuEditor on:save={handleEditorSave} on:load={handleEditorLoad}/>
 			<Editor bind:this={editor} initialText={initialSrc} />
-			<!-- <VariableInspector /> -->
+			<VariableInspector />
 		</div>
 	</div>
 

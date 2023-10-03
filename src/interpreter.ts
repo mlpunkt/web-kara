@@ -2,9 +2,16 @@ import { writable, derived } from 'svelte/store';
 import {kara_move, kara_turnLeft, kara_turnRight, output_addItem, world_putLeaf, world_removeLeaf} from './actions';
 import { OutputItemType } from './types/output';
 import { initialWorld, world, worldBeforeLastRun, world_karaOnLeaf, world_mushroomFront, world_treeFront, world_treeLeft, world_treeRight } from './types/world';
+import { variables } from './stores';
+import * as R from 'fp-ts/Record';
+import * as A from 'fp-ts/Array';
+import * as F from 'fp-ts/Function';
 
 let worldSubscription = initialWorld;
 world.subscribe(newWorld => worldSubscription = newWorld);
+
+// let variablesSubscription = new Array<Variable>();
+// variables.subscribe(newVariables => variablesSubscription = newVariables);
 
 export const sleepTimerSlider = writable(1);
 
@@ -102,6 +109,9 @@ export function step() {
             // const filename = suspension_filenameRek(suspension);
             const {filename, lineno} = suspension_lineAndFilename_Rek(suspension)
             if (filename === "userSrc.py" && lastLineNumber !== lineno) {
+                const variableState = suspension2VariablesRek(suspension);
+                variables.set(variableState)
+
                 stepDone = true;
                 currentLineNumber.set(lineno)
                 lastLineNumber = lineno;
@@ -291,6 +301,10 @@ export function runProgram(src: string, breakpoints: Array<number>) {
                     lastLineNumber = lineno;
                     currentLineNumber.set(lineno)
 
+                    const variableState = suspension2VariablesRek(suspension);
+                    variables.set(variableState)
+                    // console.log(variableState)
+                    
                     // if (interpreterStateSubscription === InterpreterState.RUNNING) {
                     //     await sleep(sleepTimerSubscription * 1000);
                     // }
@@ -367,3 +381,62 @@ export function runProgram(src: string, breakpoints: Array<number>) {
 // 		console.log(err.toString());
 // 	});
 // }
+
+const ignoreList = ["__doc__", "__name__", "__package__", "__file__", "Kara", "time"];
+
+function suspension2Variables(suspension) {
+    return F.pipe(
+        suspension.child.$loc,
+        R.filterWithIndex((index: string, v: any) => !ignoreList.includes(index)),
+        R.toArray,
+        A.map(
+            (v: any) => ({
+                name: v[0],
+                value: v[1].v,
+                type: v[1].tp$name,
+            }))
+
+        // R.mapWithIndex((index: string, v: any) => ({
+        //     name: index,
+        //     value: v.v,
+        //     type: v.tp$name,
+        // })),
+        
+    );
+}
+
+function suspension2VariablesRek(suspension) {
+    function rek(child) {
+        const varsFromTmps = child.$tmps ? obj2Variables(child.$tmps) : [];
+        const varsFromCell = child.$cell ? obj2Variables(child.$cell) : [];
+
+        // const variablesThis = [...obj2Variables(child.$tmps), ...obj2Variables(child.$cell)];
+        const variablesThis = [...varsFromTmps, ...varsFromCell];
+        if (child.child.$tmps || child.child.$cell) {
+            return [variablesThis, ...rek(child.child)]
+        } else {
+            return [variablesThis];
+        }
+    }
+
+    // return obj2Variables(suspension.child.$gbl);
+    if (suspension.child.child.$tmps || suspension.child.child.$cell) {
+        return [obj2Variables(suspension.child.$gbl), ...rek(suspension.child.child)]
+    } else {
+        return [obj2Variables(suspension.child.$gbl)]
+    }
+}
+
+function obj2Variables(obj) {
+    return F.pipe(
+        obj,
+        R.filterWithIndex((index: string, v: any) => !ignoreList.includes(index) && v !== undefined && !index.startsWith("$")),
+        R.toArray,
+        A.map(
+            (v: any) => ({
+                name: v[0],
+                value: v[1].v,
+                type: v[1].tp$name,
+            }))
+    );
+}
