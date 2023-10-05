@@ -14,3 +14,5 @@ export type Variable = {
 
 export const variables = writable(new Array<[Variable]>());
 // export const variables = writable({} as {[key: string]: Variable});
+
+export const fontSize = writable(12);

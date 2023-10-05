@@ -387,7 +387,7 @@ const ignoreList = ["__doc__", "__name__", "__package__", "__file__", "Kara", "t
 function suspension2Variables(suspension) {
     return F.pipe(
         suspension.child.$loc,
-        R.filterWithIndex((index: string, v: any) => !ignoreList.includes(index)),
+        R.filterWithIndex((index: string, v: any) => (!ignoreList.includes(index)) || index.startsWith("__")),
         R.toArray,
         A.map(
             (v: any) => ({
@@ -430,7 +430,7 @@ function suspension2VariablesRek(suspension) {
 function obj2Variables(obj) {
     return F.pipe(
         obj,
-        R.filterWithIndex((index: string, v: any) => !ignoreList.includes(index) && v !== undefined && !index.startsWith("$")),
+        R.filterWithIndex((index: string, v: any) => !ignoreList.includes(index) && v !== undefined && !index.startsWith("$") && !index.startsWith("__")),
         R.toArray,
         A.map(
             (v: any) => ({

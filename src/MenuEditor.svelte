@@ -7,6 +7,7 @@
     import iconLoad from   '../assets/load.svg';
     import { tooltip } from './tooltip';
     import { dialog_openLoadFileDialog, dialog_openSaveFileAsDialog } from './actions';
+    import {fontSize} from './stores';
 
     function handleButtonSaveClick() {
         dispatch('save');
@@ -49,6 +50,14 @@
                 dispatch('load', {text: content});
             }
         )
+    }
+
+    function handleButtonFontSizeIncreaseClick() {
+        fontSize.update(fontSize => fontSize + 1);
+    }
+
+    function handleButtonFontSizeDecreaseClick() {
+        fontSize.update(fontSize => fontSize - 1);
     }
 </script>
 
@@ -94,6 +103,13 @@
         />
     </button>
 
+    <button on:click={handleButtonFontSizeIncreaseClick}>
+        +
+    </button>
+
+    <button on:click={handleButtonFontSizeDecreaseClick}>
+        -
+    </button>
 <!--     
     <button on:click={handleButtonSaveClick}>speichern</button>
     <span>Dateiname: </span> <input bind:value={$srcFilename}> <span>.py</span>

@@ -21,7 +21,7 @@
 	import LoadFileDialog from "./dialog/LoadFileDialog.svelte";
     import type { Exercise } from "./Exercise";
     import VariableInspector from "./VariableInspector.svelte";
-
+	import {fontSize} from './stores';
 
 	let editor: Editor;
 
@@ -91,7 +91,7 @@
 	}
 </script>
 
-<main>
+<main style:font-size={$fontSize.toString() + 'pt'}>
 	<div style="display: flex; height: 100vh">
 		<div style="display: flex; flex-direction: column; margin-right: 3em;">
 			<MenuTop 

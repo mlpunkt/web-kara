@@ -3,7 +3,7 @@
 </script>
 
 <div style="height: 30%; overflow-y: scroll;">
-    <div>Variablen</div>
+    <div style="font-weight: 900;">Variablen</div>
     {#each $variables as dict}
     <table>
         <tr>
@@ -14,10 +14,17 @@
         {#each dict as variable}
             <tr>
                 <td>{variable.name}</td>
-                <td>{variable.value}</td>
+                <td>{variable.value ? variable.value : ''}</td>
                 <td>{variable.type}</td>
             </tr>
         {/each}
     </table>
     {/each}
 </div>
+
+<style>
+    table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+</style>

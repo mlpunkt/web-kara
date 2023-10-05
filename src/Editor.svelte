@@ -110,13 +110,39 @@ function editorAction(node) {
     //     parent: node
     // });
 
+    // Font Size: https://discuss.codemirror.net/t/changing-the-font-size-of-cm6/2935/6
     const theme = EditorView.theme({
         // "&": {"max-height": "800px"},
         // "&": {"flex-basis": "90%"},
-        "&": {width: "100%", height: "100%"},
+        "&": {
+            width: "100%", 
+            height: "100%",
+            
+            // fontSize: "14.5pt",
+            // border: "1px solid #c0c0c0"
+        },
+        // ".cm-scroller": {fontFamily: "inherit"}
         // ".cm-scroller": {overflow: "auto"}
     });
 
+
+    // const Theme = EditorView.theme({
+    // "&": {
+    //     fontSize: "10.5pt",
+    //     border: "1px solid #c0c0c0"
+    // },
+    // ".cm-content": {
+    //     fontFamily: "Menlo, Monaco, Lucida Console, monospace",
+    //     minHeight: "200px"
+    // },
+    // ".cm-gutters": {
+    //     minHeight: "200px"
+    // },
+    // ".cm-scroller": {
+    //     overflow: "auto",
+    //     maxHeight: "600px"
+    // }
+    // });
 
     // https://discuss.codemirror.net/t/codemirror-6-set-indentation-unit/2972/3
     editorView = new EditorView({
@@ -149,5 +175,7 @@ function editorAction(node) {
         height: calc(70% - 58px);
         /* flex-basis: 80%;
         flex-grow: 1; */
+        font-family: monospace;
+        
     }
 </style>
