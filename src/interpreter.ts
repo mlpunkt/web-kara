@@ -365,6 +365,7 @@ export function runProgram(src: string, breakpoints: Array<number>) {
         .finally(() => {
             interpreterState.set(InterpreterState.STOPPED)
             currentLineNumber.set(null);
+            variables.set([]);
         });
 }
 

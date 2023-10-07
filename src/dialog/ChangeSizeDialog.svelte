@@ -1,6 +1,6 @@
 <script lang="ts">
 
-    import { dialog_closeChangeSizeDialog, world_setSize } from "../actions";
+    import { dialog_closeChangeSizeDialog, dialog_openMessageDialog, world_setSize } from "../actions";
 
     import { dialogState } from "../types/dialogState";
     import { world } from "../types/world";
@@ -8,8 +8,15 @@
 
 
     function handleOkClick() {
-        world_setSize(sizeX, sizeY);
-        dialog_closeChangeSizeDialog();
+        if (sizeX > 30 || sizeY > 30) {
+            dialog_openMessageDialog('Fehler', 'Die Welt darf maximal 30 Felder breit und 30 Felder hoch sein.');
+            dialog_closeChangeSizeDialog();
+        } else {
+            world_setSize(sizeX, sizeY);
+            dialog_closeChangeSizeDialog();
+        }
+        // world_setSize(sizeX, sizeY);
+        // dialog_closeChangeSizeDialog();
     }
 
     function close() {
