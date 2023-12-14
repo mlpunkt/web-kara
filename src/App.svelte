@@ -1,5 +1,5 @@
 <script lang="ts">
-	import World from "./world.svelte";
+	import World from "./world/world.svelte";
 	import MenuLeft from "./MenuLeft.svelte";
 	import MenuRight from "./MenuRight.svelte";
 	import MenuBottom from "./MenuBottom.svelte";
@@ -9,7 +9,7 @@
 
 	import Output from "./Output.svelte";
 
-	import Editor from './Editor.svelte';
+	import Editor from './editor/Editor.svelte';
 	import { runProgram, interpreterState, InterpreterState } from "./interpreter";
 	import { initialSrcDefault } from "./initialSrc";
 	import MenuTop from "./MenuTop.svelte";

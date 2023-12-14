@@ -6,10 +6,10 @@
 
     import { range } from 'fp-ts/NonEmptyArray'
 
-    import {direction_rotationDegrees, world} from './types/world';
-    import {uiState, EditMode } from './types/uiState';
-    import { kara_setPosition, world_deleteEverythingFromField, world_toggleLeaf, world_toggleMushroom, world_toggleTree } from './actions';
-    import { worldHeight } from './types/world';
+    import {direction_rotationDegrees, world} from '../types/world';
+    import {uiState, EditMode } from '../types/uiState';
+    import { kara_setPosition, world_deleteEverythingFromField, world_toggleLeaf, world_toggleMushroom, world_toggleTree } from '../actions';
+    import { worldHeight } from '../types/world';
 
     const fieldSize = 50;
 

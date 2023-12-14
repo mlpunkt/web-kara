@@ -6,7 +6,7 @@ import {basicSetup} from './codemirrorSetup';
 import {EditorState, Compartment} from "@codemirror/state";
 import {python} from "@codemirror/lang-python"
 import {lineHighlightField, addLineHighlight, removeLineHighlight} from './lineMarkExtension';
-import {currentLineNumber, InterpreterState, interpreterState} from './interpreter';
+import {currentLineNumber, InterpreterState, interpreterState} from '../interpreter';
 import { breakpointGutter, breakpointState } from "./BreakpointGutter";
 import { indentUnit } from "@codemirror/language";
 

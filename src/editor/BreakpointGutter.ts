@@ -1,6 +1,6 @@
 import {StateField, StateEffect, RangeSet} from "@codemirror/state"
 import {EditorView, gutter, GutterMarker} from "@codemirror/view"
-import { InterpreterState, interpreterState } from "./interpreter"
+import { InterpreterState, interpreterState } from "../interpreter"
 
 let interpreterStateSubscription;
 interpreterState.subscribe(newVal => interpreterStateSubscription = newVal);
