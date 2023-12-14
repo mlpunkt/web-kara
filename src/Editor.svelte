@@ -5,7 +5,7 @@ import {indentWithTab} from "@codemirror/commands"
 import {basicSetup} from './codemirrorSetup';
 import {EditorState, Compartment} from "@codemirror/state";
 import {python} from "@codemirror/lang-python"
-import {lineHighlightField, addLineHighlight} from './lineMarkExtension';
+import {lineHighlightField, addLineHighlight, removeLineHighlight} from './lineMarkExtension';
 import {currentLineNumber, InterpreterState, interpreterState} from './interpreter';
 import { breakpointGutter, breakpointState } from "./BreakpointGutter";
 import { indentUnit } from "@codemirror/language";
@@ -66,7 +66,7 @@ export function highlightLine(lineNo: number | null) {
         const docPosition = editorView.state.doc.line(lineNo).from;
         editorView.dispatch({effects: addLineHighlight.of(docPosition)});
     } else {
-        editorView.dispatch({effects: addLineHighlight.of(null)});
+        editorView.dispatch({effects: removeLineHighlight.of(null)});
     }
 }
 
@@ -79,7 +79,11 @@ export function setReadOnly(readonly: boolean) {
         effects: readOnlyCompartment.reconfigure(EditorState.readOnly.of(readonly)),
     })
 
-    highlightLine($currentLineNumber);
+    if (readonly) {
+        highlightLine($currentLineNumber);
+    } else {
+        highlightLine(null);
+    }
 }
 
 // function setReadonly(view, size) {
@@ -146,7 +150,16 @@ function editorAction(node) {
 
     // https://discuss.codemirror.net/t/codemirror-6-set-indentation-unit/2972/3
     editorView = new EditorView({
-        extensions: [breakpointGutter, basicSetup, readOnlyCompartment.of(readonly), python(), lineHighlightField, theme, indentUnit.of("    "), keymap.of([indentWithTab])],
+        extensions: [
+            breakpointGutter,
+            basicSetup,
+            readOnlyCompartment.of(readonly),
+            python(),
+            lineHighlightField,
+            theme,
+            indentUnit.of("    "),
+            keymap.of([indentWithTab])
+        ],
         parent: node
     });
 

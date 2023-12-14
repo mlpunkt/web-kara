@@ -11,14 +11,19 @@ const breakpointEffect = StateEffect.define<{pos: number, on: boolean}>({
 
 export const breakpointState = StateField.define<RangeSet<GutterMarker>>({
     create() { return RangeSet.empty },
-    update(set, transaction) {
-        set = set.map(transaction.changes)
+    update(s, transaction) {
+        // Ein Breakpointist im RangeSet s an eine position gebunden. Eine Position ist der Index eine Zeichens im Dokument.
+        // vor dem Breakpoint Zeichen eingefügt / gelöscht werden, muss die Position des Breakpoints um die Anzahl der eingefügten / gelöschten Zeichen erhöht / erniedrigt werden.
+        // Das macht die folgende Zeile
+        // (Man sieht dies, indem man die Zeile entfernt, einen Breakpoint setzt und vor dem Breakpoint Zeilen einfügt / löscht)
+        let set = s.map(transaction.changes)
+        // let set = s
         for (let e of transaction.effects) {
             if (e.is(breakpointEffect)) {
                 if (e.value.on)
-                set = set.update({add: [breakpointMarker.range(e.value.pos)]})
+                    set = set.update({add: [breakpointMarker.range(e.value.pos)]})
                 else
-                set = set.update({filter: from => from != e.value.pos})
+                    set = set.update({filter: from => from != e.value.pos})
             }
         }
         // console.log(set)
@@ -27,6 +32,7 @@ export const breakpointState = StateField.define<RangeSet<GutterMarker>>({
 })
 
 export function toggleBreakpoint(view: EditorView, pos: number) {
+    // ermittel, ob es bereits einen Breakpoint an der Stelle pos gibt
     let breakpoints = view.state.field(breakpointState)
     let hasBreakpoint = false
     breakpoints.between(pos, pos, () => {hasBreakpoint = true})

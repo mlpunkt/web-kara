@@ -14,7 +14,7 @@
         {#each dict as variable}
             <tr>
                 <td>{variable.name}</td>
-                <td>{variable.value ? variable.value : ''}</td>
+                <td>{(variable.value !== undefined && variable.value !== null) ? variable.value : ''}</td>
                 <td>{variable.type}</td>
             </tr>
         {/each}
