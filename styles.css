@@ -1,0 +1,20 @@
+.iconButton {
+    /* margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 1px;
+    margin-right: 1px; */
+
+    margin: 1px;
+
+    padding: 3px;
+    height: 40px;
+    width: 40px;
+
+    appearance: none;
+}
+
+.panel {
+    background-color: lightgrey;
+    padding: 3px;
+    margin:  5px;
+}

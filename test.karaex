@@ -1,0 +1,4 @@
+{
+"worlds":[{"sizeX":6,"sizeY":6,"kara":{"position":{"x":0,"y":2},"direction":"RIGHT"},"trees":[{"x":1,"y":1},{"x":2,"y":1},{"x":3,"y":1},{"x":4,"y":1},{"x":4,"y":2},{"x":4,"y":3},{"x":3,"y":3},{"x":2,"y":3},{"x":1,"y":3}],"leaves":[{"x":2,"y":2}],"mushrooms":[]}],
+"initialSrc":"kara.move()\nkara.putLeaf()"
+}
