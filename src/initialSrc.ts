@@ -19,7 +19,7 @@ export let initialSrcDefault =
 # kara.treeFront()  kara.treeRight() kara.treeLeft()
 # kara.onLeaf()  kara.mushroomFront()
 #
-#AUSGABE/Eingabe:
+#AUSGABE/EINGABE:
 # print("Hello World!")
 # x = input("Ich bin ein Eingabefenster!")
 
