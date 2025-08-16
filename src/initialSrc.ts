@@ -8,14 +8,22 @@
 // # kara.onLeaf()  kara.mushroomFront()
 
 export let initialSrcDefault = 
-`# BEFEHLE:
+`# Dieser Online-Editor dient der Vorbereitung für den Unterricht.
+# Du kannst dir selbst eine Welt erstellen/nachbauen und die Lösung programmieren.
+
+#BEFEHLE:
 # kara.move()  kara.turnRight()  kara.turnLeft()
 # kara.putLeaf()  kara.removeLeaf()
 #
 # SENSOREN:
 # kara.treeFront()  kara.treeRight() kara.treeLeft()
 # kara.onLeaf()  kara.mushroomFront()
+#
+#AUSGABE/Eingabe:
+# print("Hello World!")
+# x = input("Ich bin ein Eingabefenster!")
 
+# Hier gehts los mit dem Programm...
 kara.move()
 kara.putLeaf()`
 

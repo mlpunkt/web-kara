@@ -3,17 +3,19 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "rollup -c",
     "dev": "rollup -c -w",
-    "start": "sirv public --no-clear",
-    "start2": "serve public",
-    "check": "svelte-check --tsconfig ./tsconfig.json"
+    "build": "rollup -c",
+    "start": "sirv public --single",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d public"
   },
+  "homepage": "https://mlpunkt.github.io/web-kara",
   "devDependencies": {
     "@rollup/plugin-commonjs": "^17.0.0",
     "@rollup/plugin-node-resolve": "^11.0.0",
     "@rollup/plugin-typescript": "^8.0.0",
     "@tsconfig/svelte": "^2.0.0",
+    "gh-pages": "^6.3.0",
     "rollup": "^2.3.4",
     "rollup-plugin-css-only": "^3.1.0",
     "rollup-plugin-livereload": "^2.0.0",
